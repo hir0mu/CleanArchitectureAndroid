@@ -11,8 +11,11 @@ interface ArticleDao {
     @Query("SELECT * FROM fav_article")
     fun getAll(): List<FavArticle>
 
+    @Query("SELECT * FROM fav_article WHERE id IN (:articleIds)")
+    fun getArticlesByIds(articleIds: List<String>): List<FavArticle>
+
     @Query("SELECT * FROM fav_article")
-    fun listMembersLiveData(): LiveData<List<FavArticle>>
+    fun listArticlesLiveData(): LiveData<List<FavArticle>>
 
     @Insert
     fun insertAll(articles: List<FavArticle>)

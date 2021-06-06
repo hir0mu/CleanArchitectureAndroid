@@ -8,7 +8,9 @@ import com.hiring.data.entity.FavArticle
 interface FavoriteRepository {
     suspend fun getAll(): List<FavArticle>
 
-    fun listMembersLiveData(): LiveData<List<FavArticle>>
+    suspend fun getArticlesByIds(articleIds: List<String>): List<FavArticle>
+
+    fun listArticlesLiveData(): LiveData<List<FavArticle>>
 
     suspend fun insertAll(vararg articles: FavArticle)
 

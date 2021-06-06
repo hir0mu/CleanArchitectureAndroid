@@ -16,8 +16,14 @@ class FavoriteRepositoryImpl(
         }
     }
 
-    override fun listMembersLiveData(): LiveData<List<FavArticle>> {
-        return articleDao.listMembersLiveData()
+    override suspend fun getArticlesByIds(articleIds: List<String>): List<FavArticle> {
+        return withContext(Dispatchers.IO) {
+            articleDao.getArticlesByIds(articleIds)
+        }
+    }
+
+    override fun listArticlesLiveData(): LiveData<List<FavArticle>> {
+        return articleDao.listArticlesLiveData()
     }
 
     override suspend fun insertAll(vararg articles: FavArticle) {
