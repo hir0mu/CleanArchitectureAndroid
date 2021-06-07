@@ -10,6 +10,7 @@ import com.hiring.cleanarchitecture.domain.usecase.FavoriteArticleUsecase
 import com.hiring.cleanarchitecture.domain.usecase.impl.ArticleDetailUsecaseImpl
 import com.hiring.cleanarchitecture.domain.usecase.impl.ArticleListUsecaseImpl
 import com.hiring.cleanarchitecture.domain.usecase.impl.FavoriteArticleUsecaseImpl
+import com.hiring.cleanarchitecture.view.list.ArticleListFragment
 import com.hiring.cleanarchitecture.view.list.ArticleListViewModel
 import com.hiring.data.api.ArticleApi
 import com.hiring.data.db.ArticleDao
@@ -47,9 +48,10 @@ private val domainModule = module {
 }
 
 private val appModule = module {
-    viewModel { ArticleListViewModel(get()) }
+    scope<ArticleListFragment> {
+        viewModel { ArticleListViewModel(get()) }
+    }
 }
-
 
 private fun okHttpClient(): OkHttpClient {
     return OkHttpClient.Builder()

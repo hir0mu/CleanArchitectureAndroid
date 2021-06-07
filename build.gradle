@@ -13,6 +13,8 @@ buildscript {
 
   ext.koin_version = "3.0.2"
 
+  ext.timber_version = "4.1.2"
+
   repositories {
     google()
     jcenter()
