@@ -17,6 +17,7 @@ class ArticleListUsecaseImpl(
 
     companion object {
         private const val PER_PAGE = 20
+        private const val FIRST_PAGE = 1
     }
 
     private val articlesMutableLiveData: MutableLiveData<List<ArticleModel>> = MutableLiveData()
@@ -29,7 +30,7 @@ class ArticleListUsecaseImpl(
             oldParams = null
         }
 
-        val page = oldParams?.lastPage?.let { it + 1 } ?: 0
+        val page = oldParams?.lastPage?.let { it + 1 } ?: FIRST_PAGE
         val articles = articleRepository.getArticles(itemId, page, PER_PAGE)
         val favs = favoriteRepository.getArticlesByIds(articles.map { it.id })
 
