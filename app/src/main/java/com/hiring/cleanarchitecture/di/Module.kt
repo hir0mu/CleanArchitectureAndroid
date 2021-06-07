@@ -63,7 +63,7 @@ private fun retrofit(client: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .baseUrl("https://qiita.com/api/v2/")
         .client(client)
-        .addConverterFactory(Json.asConverterFactory(contentType))
+        .addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory(contentType))
         .build()
 }
 
