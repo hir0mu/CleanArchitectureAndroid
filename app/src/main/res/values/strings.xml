@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">CleanArchitectureAndroid</string>
+
+    <string name="error_400">無効なサーバーリクエストです</string>
+    <string name="error_401">未承認です</string>
+    <string name="error_403">記事へのアクセス権がありません</string>
+    <string name="error_404">記事が見つかりません</string>
+    <string name="error_500">サーバー側に異常が発生しました</string>
+    <string name="error_default">通信エラーが発生しました</string>
 </resources>

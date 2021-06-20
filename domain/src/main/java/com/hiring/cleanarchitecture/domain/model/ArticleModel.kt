@@ -9,9 +9,10 @@ data class ArticleModel(
 )
 
 fun MutableList<ArticleModel>.merge(newItems: List<ArticleModel>) {
+    val ids = this.map { it.id }
     newItems.forEach { new ->
-        if (any { it.id != new.id }) {
-            add(new)
+        if (!ids.contains(new.id)) {
+            this.add(new)
         }
     }
 }
