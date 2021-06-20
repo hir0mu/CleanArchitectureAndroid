@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">CleanArchitectureAndroid</string>
 
+    <!--ナビゲーション-->
+    <string name="tab_title_search">検索</string>
+    <string name="tab_title_favorite">お気に入り</string>
+
     <string name="error_400">無効なサーバーリクエストです</string>
     <string name="error_401">未承認です</string>
     <string name="error_403">記事へのアクセス権がありません</string>
