@@ -1,11 +1,11 @@
 package com.hiring.cleanarchitecture.domain.usecase.impl
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.hiring.cleanarchitecture.domain.mapper.ArticleMapper
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.merge
 import com.hiring.cleanarchitecture.domain.usecase.ArticleListUsecase
+import com.hiring.data.entity.FavArticle
+import com.hiring.data.entity.User
 import com.hiring.data.repository.ArticleRepository
 import com.hiring.data.repository.FavoriteRepository
 
@@ -20,11 +20,10 @@ class ArticleListUsecaseImpl(
         private const val FIRST_PAGE = 1
     }
 
-    private val articlesMutableLiveData: MutableLiveData<List<ArticleModel>> = MutableLiveData()
     private val allArticles: MutableList<ArticleModel> = mutableListOf()
     private var oldParams: Params? = null
 
-    override suspend fun updateArticles(itemId: String) {
+    override suspend fun fetchArticles(itemId: String): List<ArticleModel> {
 
         if (oldParams?.itemId != itemId) {
             oldParams = null
@@ -39,13 +38,24 @@ class ArticleListUsecaseImpl(
         }
 
         allArticles.merge(models)
-        articlesMutableLiveData.postValue(allArticles)
 
         oldParams = Params(itemId, page)
+
+        return allArticles
     }
 
-    override fun articlesLiveData(): LiveData<List<ArticleModel>> {
-        return articlesMutableLiveData
+    override suspend fun toggleFavorite(article: ArticleModel) {
+        if (article.isFavorite) {
+            favoriteRepository.deleteByArticleId(article.id)
+        } else {
+            val favArticle = FavArticle(
+                id = article.id,
+                title = article.title,
+                url = article.url,
+                user = User(id = article.user.id, name = article.user.name, profileImageUrl = article.user.profileImageUrl)
+            )
+            favoriteRepository.insertAll(favArticle)
+        }
     }
 
     private data class Params(

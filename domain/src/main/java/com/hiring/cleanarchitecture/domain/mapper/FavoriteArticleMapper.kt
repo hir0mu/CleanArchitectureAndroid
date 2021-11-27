@@ -11,12 +11,12 @@ class FavoriteArticleMapper {
             id = entity.id,
             title = entity.title,
             url = entity.url,
-            user = entity.user?.mapToModel() ?: UserModel("", ""),
+            user = entity.user?.mapToModel() ?: UserModel("", "", ""),
             isFavorite = true
         )
     }
 
     private fun User.mapToModel(): UserModel {
-        return UserModel(name, profileImageUrl)
+        return UserModel(id, name, profileImageUrl)
     }
 }

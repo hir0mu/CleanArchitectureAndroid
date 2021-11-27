@@ -17,6 +17,6 @@ class ArticleMapper {
     }
 
     private fun User.mapToModel(): UserModel {
-        return UserModel(name, profileImageUrl)
+        return UserModel(id, name, profileImageUrl)
     }
 }
