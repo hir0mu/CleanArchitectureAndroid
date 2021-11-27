@@ -7,6 +7,7 @@
 
     <!--タイトル-->
     <string name="title_article_list">記事一覧</string>
+    <string name="title_favorite_list">お気に入り</string>
 
     <!--エラー-->
     <string name="error_400">無効なサーバーリクエストです</string>
