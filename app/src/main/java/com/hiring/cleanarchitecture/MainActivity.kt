@@ -17,5 +17,19 @@ class MainActivity : AppCompatActivity() {
     supportFragmentManager.beginTransaction()
       .add(binding.container.id, ArticleListFragment())
       .commit()
+
+    binding.bottomNavigation.setOnNavigationItemSelectedListener {
+      val fragment = when (it.itemId) {
+        R.id.navigation_search -> ArticleListFragment()
+        R.id.navigation_favorite -> ArticleListFragment()
+        else -> null
+      }
+      fragment?.let {
+        supportFragmentManager.beginTransaction()
+          .replace(binding.container.id, it)
+          .commit()
+        true
+      } ?: false
+    }
   }
 }
