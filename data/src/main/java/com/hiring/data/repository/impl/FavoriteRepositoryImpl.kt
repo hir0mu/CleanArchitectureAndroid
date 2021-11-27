@@ -1,6 +1,5 @@
 package com.hiring.data.repository.impl
 
-import androidx.lifecycle.LiveData
 import com.hiring.data.db.ArticleDao
 import com.hiring.data.entity.FavArticle
 import com.hiring.data.repository.FavoriteRepository
@@ -20,10 +19,6 @@ class FavoriteRepositoryImpl(
         return withContext(Dispatchers.IO) {
             articleDao.getArticlesByIds(articleIds)
         }
-    }
-
-    override fun listArticlesLiveData(): LiveData<List<FavArticle>> {
-        return articleDao.listArticlesLiveData()
     }
 
     override suspend fun insertAll(vararg articles: FavArticle) {
