@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.hiring.cleanarchitecture.databinding.ActivityMainBinding
+import com.hiring.cleanarchitecture.view.favorite.FavoriteListFragment
 import com.hiring.cleanarchitecture.view.list.ArticleListFragment
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     binding.bottomNavigation.setOnNavigationItemSelectedListener {
       val fragment = when (it.itemId) {
         R.id.navigation_search -> ArticleListFragment()
-        R.id.navigation_favorite -> ArticleListFragment()
+        R.id.navigation_favorite -> FavoriteListFragment()
         else -> null
       }
       fragment?.let {

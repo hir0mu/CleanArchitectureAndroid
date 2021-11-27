@@ -10,6 +10,8 @@ import com.hiring.cleanarchitecture.domain.usecase.FavoriteArticleUsecase
 import com.hiring.cleanarchitecture.domain.usecase.impl.ArticleDetailUsecaseImpl
 import com.hiring.cleanarchitecture.domain.usecase.impl.ArticleListUsecaseImpl
 import com.hiring.cleanarchitecture.domain.usecase.impl.FavoriteArticleUsecaseImpl
+import com.hiring.cleanarchitecture.view.favorite.FavoriteListFragment
+import com.hiring.cleanarchitecture.view.favorite.FavoriteListViewModel
 import com.hiring.cleanarchitecture.view.list.ArticleListFragment
 import com.hiring.cleanarchitecture.view.list.ArticleListViewModel
 import com.hiring.data.api.ArticleApi
@@ -52,11 +54,14 @@ private val appModule = module {
     scope<ArticleListFragment> {
         viewModel { ArticleListViewModel(get()) }
     }
+    scope<FavoriteListFragment> {
+        viewModel { FavoriteListViewModel(get()) }
+    }
 }
 
 private fun okHttpClient(): OkHttpClient {
     return OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
+        .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
         .build()
 }
 
@@ -73,7 +78,8 @@ private fun articleDao(applicationContext: Context): ArticleDao {
     return Room.databaseBuilder(
         applicationContext,
         ArticleDataBase::class.java, "article"
-    ).build().articleDao()
+    )
+        .build().articleDao()
 }
 
 val allModules = dataModule + domainModule + appModule

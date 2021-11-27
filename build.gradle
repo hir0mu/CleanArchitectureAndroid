@@ -4,16 +4,15 @@ buildscript {
   ext.kotlin_coroutine_version = "1.4.2"
   ext.kotlin_serialization_json_version = "1.0.1"
   ext.lifecycle_version = "2.3.0"
-
   ext.okhttp_version = '4.9.0'
   ext.retrofit_version = '2.9.0'
   ext.serialization_converter_version = "0.8.0"
-
   ext.room_version = "2.2.6"
-
   ext.koin_version = "3.0.2"
-
   ext.timber_version = "4.1.2"
+  ext.glide_version = '4.12.0'
+  ext.groupie_version = '2.9.0'
+  ext.arch_core_version = '2.1.0'
 
   repositories {
     google()
