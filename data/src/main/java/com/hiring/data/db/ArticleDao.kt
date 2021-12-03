@@ -8,7 +8,7 @@ import com.hiring.data.entity.FavArticle
 
 @Dao
 interface ArticleDao {
-    @Query("SELECT * FROM fav_article")
+    @Query("SELECT * FROM fav_article order by created_at desc")
     fun getAll(): List<FavArticle>
 
     @Query("SELECT * FROM fav_article WHERE id IN (:articleIds)")

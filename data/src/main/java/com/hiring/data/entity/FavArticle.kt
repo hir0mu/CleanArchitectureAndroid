@@ -4,8 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.hiring.data.db.ArticleGroupConverters
-import com.hiring.data.db.ArticleTagConverters
 import com.hiring.data.db.UserConverters
 
 @Entity(tableName = "fav_article")
@@ -21,5 +19,8 @@ data class FavArticle(
     var url: String = "",
 
     @ColumnInfo(name = "user")
-    var user: User? = null
+    var user: User? = null,
+
+    @ColumnInfo(name = "created_at")
+    var createdAt: Long = System.currentTimeMillis()
 )
