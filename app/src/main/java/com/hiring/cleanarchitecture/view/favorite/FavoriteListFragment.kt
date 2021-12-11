@@ -4,18 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hiring.cleanarchitecture.R
 import com.hiring.cleanarchitecture.databinding.FragmentFavoriteListBinding
 import com.hiring.cleanarchitecture.databinding.ItemFavoriteArticleBinding
 import com.hiring.cleanarchitecture.ext.setupToolbar
 import com.hiring.cleanarchitecture.util.SimpleAdapter
-import org.koin.androidx.scope.ScopeFragment
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
-class FavoriteListFragment: ScopeFragment() {
-    private val viewModel: FavoriteListViewModel by viewModel()
+@AndroidEntryPoint
+class FavoriteListFragment: Fragment() {
+    private val viewModel: FavoriteListViewModel by viewModels()
     private lateinit var binding: FragmentFavoriteListBinding
     private val adapter = SimpleAdapter<ItemFavoriteArticleBinding>(R.layout.item_favorite_article)
 
