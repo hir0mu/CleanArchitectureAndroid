@@ -9,7 +9,6 @@ buildscript {
   ext.retrofit_version = '2.9.0'
   ext.serialization_converter_version = "0.8.0"
   ext.room_version = "2.2.6"
-  ext.koin_version = "3.0.2"
   ext.timber_version = "4.1.2"
   ext.glide_version = '4.12.0'
   ext.groupie_version = '2.9.0'
