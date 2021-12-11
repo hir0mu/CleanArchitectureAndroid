@@ -6,7 +6,9 @@ import androidx.databinding.DataBindingUtil
 import com.hiring.cleanarchitecture.databinding.ActivityMainBinding
 import com.hiring.cleanarchitecture.view.favorite.FavoriteListFragment
 import com.hiring.cleanarchitecture.view.list.ArticleListFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
   private lateinit var binding: ActivityMainBinding
 
