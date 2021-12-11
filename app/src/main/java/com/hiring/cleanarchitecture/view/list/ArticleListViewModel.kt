@@ -19,13 +19,19 @@ class ArticleListViewModel(
     }
 
     fun fetchArticles() {
-        execute {
-            val articles = usecase.fetchArticles(itemId)
-            _articles.postValue(articles)
-        }
+        usecase.fetchArticles(itemId)
+            .execute(
+                onSuccess = {
+                    _articles.postValue(it)
+                },
+                retry = { fetchArticles() }
+            )
     }
 
     fun toggleFavorite(article: ArticleModel) {
-        execute { usecase.toggleFavorite(article) }
+        usecase.toggleFavorite(article)
+            .execute(
+                retry = { toggleFavorite(article) }
+            )
     }
 }
