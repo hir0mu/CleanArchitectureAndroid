@@ -8,6 +8,10 @@ import com.hiring.data.entity.FavArticle
 import com.hiring.data.entity.User
 import com.hiring.data.repository.ArticleRepository
 import com.hiring.data.repository.FavoriteRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
 
 class ArticleListUsecaseImpl(
     private val articleRepository: ArticleRepository,
@@ -23,38 +27,42 @@ class ArticleListUsecaseImpl(
     private val allArticles: MutableList<ArticleModel> = mutableListOf()
     private var oldParams: Params? = null
 
-    override suspend fun fetchArticles(itemId: String): List<ArticleModel> {
+    override fun fetchArticles(itemId: String): Flow<List<ArticleModel>> {
+        return flow {
+            if (oldParams?.itemId != itemId) {
+                oldParams = null
+            }
 
-        if (oldParams?.itemId != itemId) {
-            oldParams = null
+            val page = oldParams?.lastPage?.let { it + 1 } ?: FIRST_PAGE
+            val articles = articleRepository.getArticles(itemId, page, PER_PAGE)
+            val favs = favoriteRepository.getArticlesByIds(articles.map { it.id })
+
+            val models = articles.map { entity ->
+                articleMapper.transform(entity, favs.any { it.id == entity.id })
+            }
+
+            allArticles.merge(models)
+
+            oldParams = Params(itemId, page)
+
+            emit(allArticles)
         }
-
-        val page = oldParams?.lastPage?.let { it + 1 } ?: FIRST_PAGE
-        val articles = articleRepository.getArticles(itemId, page, PER_PAGE)
-        val favs = favoriteRepository.getArticlesByIds(articles.map { it.id })
-
-        val models = articles.map { entity ->
-            articleMapper.transform(entity, favs.any { it.id == entity.id })
-        }
-
-        allArticles.merge(models)
-
-        oldParams = Params(itemId, page)
-
-        return allArticles
     }
 
-    override suspend fun toggleFavorite(article: ArticleModel) {
-        if (article.isFavorite) {
-            favoriteRepository.deleteByArticleId(article.id)
-        } else {
-            val favArticle = FavArticle(
-                id = article.id,
-                title = article.title,
-                url = article.url,
-                user = User(id = article.user.id, name = article.user.name, profileImageUrl = article.user.profileImageUrl)
-            )
-            favoriteRepository.insertAll(favArticle)
+    override fun toggleFavorite(article: ArticleModel): Flow<Unit> {
+        return flow {
+            if (article.isFavorite) {
+                favoriteRepository.deleteByArticleId(article.id)
+            } else {
+                val favArticle = FavArticle(
+                    id = article.id,
+                    title = article.title,
+                    url = article.url,
+                    user = User(id = article.user.id, name = article.user.name, profileImageUrl = article.user.profileImageUrl)
+                )
+                favoriteRepository.insertAll(favArticle)
+            }
+            emit(Unit)
         }
     }
 

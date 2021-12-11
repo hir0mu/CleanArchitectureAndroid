@@ -13,9 +13,10 @@ class FavoriteListViewModel(
     val favorites: LiveData<List<ArticleModel>> = _favorites
 
     fun fetchFavorites() {
-        execute {
-            val favorites = usecase.fetchFavoriteArticles()
-            _favorites.postValue(favorites)
-        }
+        usecase.fetchFavoriteArticles()
+            .execute(
+                onSuccess = { _favorites.postValue(it) },
+                retry = { fetchFavorites() }
+            )
     }
 }
