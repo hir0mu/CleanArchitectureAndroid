@@ -1,9 +1,10 @@
 package com.hiring.cleanarchitecture.domain.usecase
 
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
+import kotlinx.coroutines.flow.Flow
 
 interface ArticleListUsecase {
-    suspend fun fetchArticles(itemId: String): List<ArticleModel>
+    fun fetchArticles(itemId: String): Flow<List<ArticleModel>>
 
-    suspend fun toggleFavorite(article: ArticleModel)
+    fun toggleFavorite(article: ArticleModel): Flow<Unit>
 }
