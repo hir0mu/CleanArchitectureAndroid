@@ -119,7 +119,6 @@ object MapperModule {
 @Module
 @InstallIn(SingletonComponent::class)
 object UsecaseModule {
-    @Singleton
     @Provides
     fun provideFavoriteArticleUsecase(
         favoriteRepository: FavoriteRepository,
@@ -131,7 +130,6 @@ object UsecaseModule {
         )
     }
 
-    @Singleton
     @Provides
     fun provideArticleDetailUsecase(
         articleRepository: ArticleRepository,
@@ -145,7 +143,6 @@ object UsecaseModule {
         )
     }
 
-    @Singleton
     @Provides
     fun provideArticleListUsecase(
         articleRepository: ArticleRepository,
