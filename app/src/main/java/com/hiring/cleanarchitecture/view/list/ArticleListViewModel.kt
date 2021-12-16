@@ -12,20 +12,27 @@ import javax.inject.Inject
 class ArticleListViewModel @Inject constructor(
     private val usecase: ArticleListUsecase
 ): BaseViewModel() {
-    private lateinit var itemId: String
+    companion object {
+        private const val FIRST_PAGE = 1
+    }
+
+    private var params = SearchParams.EMPTY
 
     private val _articles: MutableLiveData<List<ArticleModel>> = MutableLiveData()
     val articles: LiveData<List<ArticleModel>> = _articles
 
     fun setup(itemId: String) {
-        this.itemId = itemId
+        params = SearchParams(itemId = itemId, page = FIRST_PAGE)
     }
 
     fun fetchArticles() {
-        usecase.fetchArticles(itemId)
+        val old = if (params.page == FIRST_PAGE) listOf() else _articles.value.orEmpty()
+
+        usecase.fetchArticles(params.itemId, params.page)
             .execute(
                 onSuccess = {
-                    _articles.postValue(it)
+                    _articles.postValue(old.merged(it))
+                    params = params.countedUp()
                 },
                 retry = { fetchArticles() }
             )
@@ -37,4 +44,19 @@ class ArticleListViewModel @Inject constructor(
                 retry = { toggleFavorite(article) }
             )
     }
+}
+
+private fun SearchParams.countedUp(): SearchParams {
+    return copy(page = page + 1)
+}
+
+private fun List<ArticleModel>.merged(newItems: List<ArticleModel>): List<ArticleModel> {
+    val ids = this.map { it.id }
+    val self = this.toMutableList()
+    newItems.forEach { new ->
+        if (!ids.contains(new.id)) {
+            self.add(new)
+        }
+    }
+    return self
 }

@@ -2,15 +2,12 @@ package com.hiring.cleanarchitecture.domain.usecase.impl
 
 import com.hiring.cleanarchitecture.domain.mapper.ArticleMapper
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
-import com.hiring.cleanarchitecture.domain.model.merge
 import com.hiring.cleanarchitecture.domain.usecase.ArticleListUsecase
 import com.hiring.data.entity.FavArticle
 import com.hiring.data.entity.User
 import com.hiring.data.repository.ArticleRepository
 import com.hiring.data.repository.FavoriteRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 
 class ArticleListUsecaseImpl(
@@ -21,19 +18,10 @@ class ArticleListUsecaseImpl(
 
     companion object {
         private const val PER_PAGE = 20
-        private const val FIRST_PAGE = 1
     }
 
-    private val allArticles: MutableList<ArticleModel> = mutableListOf()
-    private var oldParams: Params? = null
-
-    override fun fetchArticles(itemId: String): Flow<List<ArticleModel>> {
+    override fun fetchArticles(itemId: String, page: Int): Flow<List<ArticleModel>> {
         return flow {
-            if (oldParams?.itemId != itemId) {
-                oldParams = null
-            }
-
-            val page = oldParams?.lastPage?.let { it + 1 } ?: FIRST_PAGE
             val articles = articleRepository.getArticles(itemId, page, PER_PAGE)
             val favs = favoriteRepository.getArticlesByIds(articles.map { it.id })
 
@@ -41,11 +29,7 @@ class ArticleListUsecaseImpl(
                 articleMapper.transform(entity, favs.any { it.id == entity.id })
             }
 
-            allArticles.merge(models)
-
-            oldParams = Params(itemId, page)
-
-            emit(allArticles)
+            emit(models)
         }
     }
 
@@ -65,9 +49,4 @@ class ArticleListUsecaseImpl(
             emit(Unit)
         }
     }
-
-    private data class Params(
-        val itemId: String,
-        val lastPage: Int
-    )
 }
