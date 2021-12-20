@@ -3,14 +3,16 @@ package com.hiring.cleanarchitecture.view.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
-import com.hiring.cleanarchitecture.domain.usecase.ArticleListUsecase
+import com.hiring.cleanarchitecture.domain.usecase.article.ArticleListUsecase
+import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
 import com.hiring.cleanarchitecture.view.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ArticleListViewModel @Inject constructor(
-    private val usecase: ArticleListUsecase
+    private val usecase: ArticleListUsecase,
+    private val toggleUsecase: ToggleFavoriteUsecase
 ): BaseViewModel() {
     companion object {
         private const val FIRST_PAGE = 1
@@ -39,7 +41,7 @@ class ArticleListViewModel @Inject constructor(
     }
 
     fun toggleFavorite(article: ArticleModel) {
-        usecase.toggleFavorite(article)
+        toggleUsecase.toggleFavorite(article)
             .execute(
                 retry = { toggleFavorite(article) }
             )
