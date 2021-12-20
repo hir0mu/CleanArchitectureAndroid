@@ -3,7 +3,7 @@ package com.hiring.cleanarchitecture.view.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
-import com.hiring.cleanarchitecture.domain.usecase.article.ArticleListUsecase
+import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUsecase
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
 import com.hiring.cleanarchitecture.view.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArticleListViewModel @Inject constructor(
-    private val usecase: ArticleListUsecase,
+    private val usecase: FetchArticleListUsecase,
     private val toggleUsecase: ToggleFavoriteUsecase
 ): BaseViewModel() {
     companion object {
