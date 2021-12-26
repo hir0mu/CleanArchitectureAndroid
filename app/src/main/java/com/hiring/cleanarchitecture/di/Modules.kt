@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Room
 import com.hiring.cleanarchitecture.domain.mapper.ArticleMapper
 import com.hiring.cleanarchitecture.domain.mapper.FavoriteArticleMapper
-import com.hiring.cleanarchitecture.domain.usecase.ArticleDetailUsecase
-import com.hiring.cleanarchitecture.domain.usecase.ArticleListUsecase
-import com.hiring.cleanarchitecture.domain.usecase.FavoriteArticleUsecase
-import com.hiring.cleanarchitecture.domain.usecase.impl.ArticleDetailUsecaseImpl
-import com.hiring.cleanarchitecture.domain.usecase.impl.ArticleListUsecaseImpl
-import com.hiring.cleanarchitecture.domain.usecase.impl.FavoriteArticleUsecaseImpl
+import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailUsecase
+import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUsecase
+import com.hiring.cleanarchitecture.domain.usecase.favorite.FetchFavoriteArticlesUsecase
+import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailUsecaseImpl
+import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUsecaseImpl
+import com.hiring.cleanarchitecture.domain.usecase.favorite.FetchFavoriteArticlesUsecaseImpl
+import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
+import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseImpl
 import com.hiring.data.api.ArticleApi
 import com.hiring.data.db.ArticleDao
 import com.hiring.data.db.ArticleDataBase
@@ -120,23 +122,32 @@ object MapperModule {
 @InstallIn(SingletonComponent::class)
 object UsecaseModule {
     @Provides
-    fun provideFavoriteArticleUsecase(
+    fun provideFetchFavoriteArticleUsecase(
         favoriteRepository: FavoriteRepository,
         favoriteArticleMapper: FavoriteArticleMapper
-    ): FavoriteArticleUsecase {
-        return FavoriteArticleUsecaseImpl(
+    ): FetchFavoriteArticlesUsecase {
+        return FetchFavoriteArticlesUsecaseImpl(
             favoriteRepository = favoriteRepository,
             favoriteArticleMapper = favoriteArticleMapper
         )
     }
 
     @Provides
-    fun provideArticleDetailUsecase(
+    fun provideToggleFavoriteUsecase(
+        favoriteRepository: FavoriteRepository
+    ): ToggleFavoriteUsecase {
+        return ToggleFavoriteUsecaseImpl(
+            favoriteRepository = favoriteRepository
+        )
+    }
+
+    @Provides
+    fun provideFetchArticleDetailUsecase(
         articleRepository: ArticleRepository,
         favoriteRepository: FavoriteRepository,
         articleMapper: ArticleMapper
-    ): ArticleDetailUsecase {
-        return ArticleDetailUsecaseImpl(
+    ): FetchArticleDetailUsecase {
+        return FetchArticleDetailUsecaseImpl(
             articleRepository = articleRepository,
             favoriteRepository = favoriteRepository,
             articleMapper = articleMapper
@@ -144,12 +155,12 @@ object UsecaseModule {
     }
 
     @Provides
-    fun provideArticleListUsecase(
+    fun provideFetchArticleListUsecase(
         articleRepository: ArticleRepository,
         favoriteRepository: FavoriteRepository,
         articleMapper: ArticleMapper
-    ): ArticleListUsecase {
-        return ArticleListUsecaseImpl(
+    ): FetchArticleListUsecase {
+        return FetchArticleListUsecaseImpl(
             articleRepository = articleRepository,
             favoriteRepository = favoriteRepository,
             articleMapper = articleMapper

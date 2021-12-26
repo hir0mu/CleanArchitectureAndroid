@@ -1,10 +1,8 @@
-package com.hiring.cleanarchitecture.domain.usecase
+package com.hiring.cleanarchitecture.domain.usecase.favorite
 
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import kotlinx.coroutines.flow.Flow
 
-interface ArticleListUsecase {
-    fun fetchArticles(itemId: String): Flow<List<ArticleModel>>
-
+interface ToggleFavoriteUsecase {
     fun toggleFavorite(article: ArticleModel): Flow<Unit>
 }
