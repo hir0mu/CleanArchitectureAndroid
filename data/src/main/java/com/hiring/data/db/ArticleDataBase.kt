@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.hiring.data.entity.FavArticle
 
-@Database(entities = [FavArticle::class], version = 1)
+@Database(entities = [FavArticle::class], version = 1, exportSchema = false)
 abstract class ArticleDataBase : RoomDatabase() {
     abstract fun articleDao(): ArticleDao
 }
