@@ -6,6 +6,7 @@ import com.hiring.cleanarchitecture.util.SimpleItem
 
 class ArticleItem(
     private var articleModel: ArticleModel,
+    private val onItemClick: (ArticleModel) -> Unit,
     private val onCheckedChange: (ArticleModel) -> Unit
 ): SimpleItem<ItemArticleBinding>() {
     override fun bind(binding: ItemArticleBinding) {
@@ -16,6 +17,7 @@ class ArticleItem(
             articleModel = old.copy(isFavorite = !articleModel.isFavorite)
             onCheckedChange(old)
         }
+        binding.root.setOnClickListener { onItemClick(articleModel) }
     }
 
     override fun isSameAs(other: SimpleItem<*>): Boolean {
