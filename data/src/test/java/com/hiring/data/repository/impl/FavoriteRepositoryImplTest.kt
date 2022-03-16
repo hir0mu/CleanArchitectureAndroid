@@ -1,13 +1,13 @@
 package com.hiring.data.repository.impl
 
+import android.media.CamcorderProfile.getAll
 import com.hiring.data.db.ArticleDao
 import com.hiring.data.entity.FavArticle
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.then
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
+import org.mockito.BDDMockito.then
+import org.mockito.Mockito.mock
 
 class FavoriteRepositoryImplTest {
     private lateinit var sut: FavoriteRepositoryImpl
