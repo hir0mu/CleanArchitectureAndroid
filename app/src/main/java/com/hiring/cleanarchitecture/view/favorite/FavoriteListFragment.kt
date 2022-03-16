@@ -12,6 +12,7 @@ import com.hiring.cleanarchitecture.databinding.FragmentFavoriteListBinding
 import com.hiring.cleanarchitecture.databinding.ItemFavoriteArticleBinding
 import com.hiring.cleanarchitecture.ext.setupToolbar
 import com.hiring.cleanarchitecture.util.SimpleAdapter
+import com.hiring.cleanarchitecture.view.detail.ArticleDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -39,7 +40,12 @@ class FavoriteListFragment: Fragment() {
 
         viewModel.favorites.observe(viewLifecycleOwner) { articles ->
             adapter.updateItems(articles.map { article ->
-                FavoriteItem(article)
+                FavoriteItem(article) {
+                    parentFragmentManager.beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.container, ArticleDetailFragment.newInstance(it.id))
+                        .commit()
+                }
             })
         }
 

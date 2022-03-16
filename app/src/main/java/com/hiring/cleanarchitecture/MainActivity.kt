@@ -3,6 +3,7 @@ package com.hiring.cleanarchitecture
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
 import com.hiring.cleanarchitecture.databinding.ActivityMainBinding
 import com.hiring.cleanarchitecture.view.favorite.FavoriteListFragment
 import com.hiring.cleanarchitecture.view.list.ArticleListFragment
@@ -21,13 +22,14 @@ class MainActivity : AppCompatActivity() {
       .add(binding.container.id, ArticleListFragment())
       .commit()
 
-    binding.bottomNavigation.setOnNavigationItemSelectedListener {
-      val fragment = when (it.itemId) {
+    binding.bottomNavigation.setOnItemSelectedListener { menu ->
+      val fragment = when (menu.itemId) {
         R.id.navigation_search -> ArticleListFragment()
         R.id.navigation_favorite -> FavoriteListFragment()
         else -> null
       }
       fragment?.let {
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         supportFragmentManager.beginTransaction()
           .replace(binding.container.id, it)
           .commit()

@@ -6,4 +6,14 @@ data class ArticleModel(
     val url: String,
     val user: UserModel,
     val isFavorite: Boolean
-)
+) {
+    companion object {
+        val EMPTY: ArticleModel = ArticleModel(
+            id = "",
+            title = "",
+            url = "",
+            user = UserModel("", "", ""),
+            isFavorite = false
+        )
+    }
+}

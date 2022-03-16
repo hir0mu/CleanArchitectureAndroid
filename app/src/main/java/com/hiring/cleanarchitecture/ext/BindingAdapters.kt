@@ -1,6 +1,7 @@
 package com.hiring.cleanarchitecture.ext
 
 import android.graphics.drawable.Drawable
+import android.webkit.WebView
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -54,5 +55,13 @@ object BindingAdapters {
 
             })
             .into(this)
+    }
+
+    @JvmStatic
+    @BindingAdapter("url")
+    fun WebView.setWebUrl(url: String) {
+        if (url.isNotEmpty() && originalUrl != url) {
+            loadUrl(url)
+        }
     }
 }
