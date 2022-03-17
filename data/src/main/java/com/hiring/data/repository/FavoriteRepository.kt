@@ -7,7 +7,7 @@ interface FavoriteRepository {
 
     suspend fun getArticlesByIds(articleIds: List<String>): List<FavArticle>
 
-    suspend fun insertAll(vararg articles: FavArticle)
+    suspend fun insertAll(articles: List<FavArticle>)
 
     suspend fun deleteByArticleId(articleId: String)
 }

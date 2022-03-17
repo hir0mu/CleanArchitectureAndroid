@@ -6,12 +6,9 @@ import com.hiring.cleanarchitecture.domain.mapper.ArticleMapper
 import com.hiring.cleanarchitecture.domain.mapper.FavoriteArticleMapper
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailUsecase
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUsecase
-import com.hiring.cleanarchitecture.domain.usecase.favorite.FetchFavoriteArticlesUsecase
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailUsecaseImpl
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUsecaseImpl
-import com.hiring.cleanarchitecture.domain.usecase.favorite.FetchFavoriteArticlesUsecaseImpl
-import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
-import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseImpl
+import com.hiring.cleanarchitecture.domain.usecase.favorite.*
 import com.hiring.data.api.ArticleApi
 import com.hiring.data.db.ArticleDao
 import com.hiring.data.db.ArticleDataBase
@@ -125,8 +122,8 @@ object UsecaseModule {
     fun provideFetchFavoriteArticleUsecase(
         favoriteRepository: FavoriteRepository,
         favoriteArticleMapper: FavoriteArticleMapper
-    ): FetchFavoriteArticlesUsecase {
-        return FetchFavoriteArticlesUsecaseImpl(
+    ): FetchFavoriteArticleListUsecase {
+        return FetchFavoriteArticleListUsecaseImpl(
             favoriteRepository = favoriteRepository,
             favoriteArticleMapper = favoriteArticleMapper
         )

@@ -3,8 +3,10 @@ package com.hiring.cleanarchitecture.view.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
+import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailArgs
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailUsecase
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
+import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseArgs
 import com.hiring.cleanarchitecture.view.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -13,7 +15,7 @@ import javax.inject.Inject
 class ArticleDetailViewModel @Inject constructor(
     private val detailUsecase: FetchArticleDetailUsecase,
     private val toggleFavoriteUsecase: ToggleFavoriteUsecase
-): BaseViewModel() {
+) : BaseViewModel() {
     private val _article: MutableLiveData<ArticleModel> = MutableLiveData(ArticleModel.EMPTY)
     val article: LiveData<ArticleModel> = _article
 
@@ -24,21 +26,21 @@ class ArticleDetailViewModel @Inject constructor(
     }
 
     fun fetchDetail() {
-        detailUsecase.fetchArticle(id)
-            .execute(
-                onSuccess = { _article.value = it },
-                retry = { fetchDetail() }
-            )
+        detailUsecase.execute(
+            args = FetchArticleDetailArgs(id),
+            onSuccess = { _article.value = it },
+            retry = { fetchDetail() }
+        )
     }
 
     fun toggleFavorite() {
         val old = _article.value ?: return
-        toggleFavoriteUsecase.toggleFavorite(old)
-            .execute(
-                onSuccess = {
-                    _article.value = old.copy(isFavorite = !old.isFavorite)
-                },
-                retry = { toggleFavorite() }
-            )
+        toggleFavoriteUsecase.execute(
+            args = ToggleFavoriteUsecaseArgs(old),
+            onSuccess = {
+                _article.value = old.copy(isFavorite = !old.isFavorite)
+            },
+            retry = { toggleFavorite() }
+        )
     }
 }

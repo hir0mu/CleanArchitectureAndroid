@@ -3,8 +3,10 @@ package com.hiring.cleanarchitecture.view.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
+import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListArgs
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUsecase
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
+import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseArgs
 import com.hiring.cleanarchitecture.view.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -13,7 +15,7 @@ import javax.inject.Inject
 class ArticleListViewModel @Inject constructor(
     private val usecase: FetchArticleListUsecase,
     private val toggleUsecase: ToggleFavoriteUsecase
-): BaseViewModel() {
+) : BaseViewModel() {
     companion object {
         private const val FIRST_PAGE = 1
     }
@@ -30,21 +32,21 @@ class ArticleListViewModel @Inject constructor(
     fun fetchArticles() {
         val old = if (params.page == FIRST_PAGE) listOf() else _articles.value.orEmpty()
 
-        usecase.fetchArticles(params.itemId, params.page)
-            .execute(
-                onSuccess = {
-                    _articles.postValue(old.merged(it))
-                    params = params.countedUp()
-                },
-                retry = { fetchArticles() }
-            )
+        usecase.execute(
+            args = FetchArticleListArgs(params.itemId, params.page),
+            onSuccess = {
+                _articles.postValue(old.merged(it))
+                params = params.countedUp()
+            },
+            retry = { fetchArticles() }
+        )
     }
 
     fun toggleFavorite(article: ArticleModel) {
-        toggleUsecase.toggleFavorite(article)
-            .execute(
-                retry = { toggleFavorite(article) }
-            )
+        toggleUsecase.execute(
+            args = ToggleFavoriteUsecaseArgs(article),
+            retry = { toggleFavorite(article) }
+        )
     }
 }
 
