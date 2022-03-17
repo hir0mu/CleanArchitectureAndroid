@@ -11,14 +11,14 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteListViewModel @Inject constructor(
     private val usecase: FetchFavoriteArticleListUsecase
-): BaseViewModel() {
+) : BaseViewModel() {
     private val _favorites: MutableLiveData<List<ArticleModel>> = MutableLiveData()
     val favorites: LiveData<List<ArticleModel>> = _favorites
 
     fun fetchFavorites() {
         usecase.execute(
-                onSuccess = { _favorites.postValue(it) },
-                retry = { fetchFavorites() }
-            )
+            onSuccess = { _favorites.postValue(it) },
+            retry = { fetchFavorites() }
+        )
     }
 }
