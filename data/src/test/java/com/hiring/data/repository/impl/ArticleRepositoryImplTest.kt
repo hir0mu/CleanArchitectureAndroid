@@ -5,106 +5,113 @@ import com.hiring.data.entity.Article
 import com.hiring.data.entity.ArticleGroup
 import com.hiring.data.entity.ArticleTag
 import com.hiring.data.entity.User
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.then
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.given
+import org.mockito.kotlin.then
 
+@ExperimentalCoroutinesApi
 class ArticleRepositoryImplTest {
-  private lateinit var sut: ArticleRepositoryImpl
 
-  @Test
-  fun testGetArticleDetail() {
-    // GIVEN
-    val id = "id"
-    val api = mock<ArticleApi> {
-      onBlocking { articleDetail(id) } doReturn ARTICLE
+    @Mock
+    private lateinit var api: ArticleApi
+    private lateinit var sut: ArticleRepositoryImpl
+
+    @Before
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
+        sut = ArticleRepositoryImpl(api)
     }
-    sut = ArticleRepositoryImpl(api)
 
-    // WHEN
-    val result = runBlocking { sut.getArticleDetail(id) }
+    @Test
+    fun testGetArticleDetail() = runTest {
+        // GIVEN
+        val id = "id"
+        given(api.articleDetail(id)).willReturn(ARTICLE)
 
-    // THEN
-    assertEquals(ARTICLE, result)
-    runBlocking { then(api).should().articleDetail(id) }
-  }
+        // WHEN
+        val result = sut.getArticleDetail(id)
 
-
-  @Test
-  fun testGetArticles() {
-    // GIVEN
-    val itemId = "id"
-    val page = 0
-    val perPage = 20
-    val api = mock<ArticleApi> {
-      onBlocking { articles(itemId, page, perPage) } doReturn ARTICLES
+        // THEN
+        assertEquals(ARTICLE, result)
+        then(api).should().articleDetail(id)
     }
-    sut = ArticleRepositoryImpl(api)
 
-    // WHEN
-    val result = runBlocking { sut.getArticles(itemId, page, perPage) }
 
-    // THEN
-    assertEquals(ARTICLES, result)
-    runBlocking { then(api).should().articles(itemId, page, perPage) }
-  }
+    @Test
+    fun testGetArticles() = runTest {
+        // GIVEN
+        val itemId = "id"
+        val page = 0
+        val perPage = 20
+        given(api.articles(itemId, page, perPage)).willReturn(ARTICLES)
 
-  companion object {
-    private val GROUP = ArticleGroup(
-        createdAt = "createdAt",
-        id = 0,
-        name = "name",
-        private = false,
-        updatedAt = "updatedAt",
-        urlName = "urlName",
-    )
+        // WHEN
+        val result = sut.getArticles(itemId, page, perPage)
 
-    private val TAG = ArticleTag(
-        name = "name",
-        versions = listOf()
-    )
+        // THEN
+        assertEquals(ARTICLES, result)
+        then(api).should().articles(itemId, page, perPage)
+    }
 
-    private val USER = User(
-        description = "description",
-        facebookId = "facebookId",
-        followeesCount = 0,
-        followersCount = 0,
-        githubLoginName = "githubLoginName",
-        id = "id",
-        itemsCount = 0,
-        linkedinId = "linkedinId",
-        location = "location",
-        name = "name",
-        organization = "organization",
-        permanentId = 0,
-        profileImageUrl = "profileImageUrl",
-        teamOnly = false,
-        twitterScreenName = "twitterScreenName",
-        websiteUrl = "websiteUrl"
-    )
+    companion object {
+        private val GROUP = ArticleGroup(
+            createdAt = "createdAt",
+            id = 0,
+            name = "name",
+            private = false,
+            updatedAt = "updatedAt",
+            urlName = "urlName",
+        )
 
-    private val ARTICLE = Article(
-        renderedBody = "renderedBody",
-        body = "body",
-        coediting = false,
-        commentsCount = 0,
-        createdAt = "createdAt",
-        group = GROUP,
-        id = "id",
-        likesCount = 0,
-        private = false,
-        reactionsCount = 0,
-        tags = listOf(TAG),
-        title = "title",
-        updatedAt = "updatedAt",
-        url = "url",
-        user = USER,
-        pageViewsCount = 0
-    )
+        private val TAG = ArticleTag(
+            name = "name",
+            versions = listOf()
+        )
 
-    private val ARTICLES = listOf(ARTICLE)
-  }
+        private val USER = User(
+            description = "description",
+            facebookId = "facebookId",
+            followeesCount = 0,
+            followersCount = 0,
+            githubLoginName = "githubLoginName",
+            id = "id",
+            itemsCount = 0,
+            linkedinId = "linkedinId",
+            location = "location",
+            name = "name",
+            organization = "organization",
+            permanentId = 0,
+            profileImageUrl = "profileImageUrl",
+            teamOnly = false,
+            twitterScreenName = "twitterScreenName",
+            websiteUrl = "websiteUrl"
+        )
+
+        private val ARTICLE = Article(
+            renderedBody = "renderedBody",
+            body = "body",
+            coediting = false,
+            commentsCount = 0,
+            createdAt = "createdAt",
+            group = GROUP,
+            id = "id",
+            likesCount = 0,
+            private = false,
+            reactionsCount = 0,
+            tags = listOf(TAG),
+            title = "title",
+            updatedAt = "updatedAt",
+            url = "url",
+            user = USER,
+            pageViewsCount = 0
+        )
+
+        private val ARTICLES = listOf(ARTICLE)
+    }
 }
