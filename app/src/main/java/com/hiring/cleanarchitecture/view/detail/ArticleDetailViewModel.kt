@@ -8,14 +8,16 @@ import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailUse
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseArgs
 import com.hiring.cleanarchitecture.view.BaseViewModel
+import com.hiring.cleanarchitecture.view.ViewModelArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ArticleDetailViewModel @Inject constructor(
     private val detailUsecase: FetchArticleDetailUsecase,
-    private val toggleFavoriteUsecase: ToggleFavoriteUsecase
-) : BaseViewModel() {
+    private val toggleFavoriteUsecase: ToggleFavoriteUsecase,
+    viewModelArgs: ViewModelArgs
+) : BaseViewModel(viewModelArgs) {
     private val _article: MutableLiveData<ArticleModel> = MutableLiveData(ArticleModel.EMPTY)
     val article: LiveData<ArticleModel> = _article
 

@@ -8,13 +8,15 @@ import com.hiring.cleanarchitecture.R
 import com.hiring.cleanarchitecture.domain.usecase.Usecase
 import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgs
 import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgsUnit
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-abstract class BaseViewModel: ViewModel() {
+abstract class BaseViewModel(
+    protected val viewModelArgs: ViewModelArgs
+) : ViewModel() {
 
     private val _error: MutableLiveData<Failure> = MutableLiveData()
     val error: LiveData<Failure> = _error
@@ -30,15 +32,14 @@ abstract class BaseViewModel: ViewModel() {
         )
     }
 
-    protected fun <ARGS: UsecaseArgs, MODEL> Usecase<ARGS, MODEL>.execute(
+    protected fun <ARGS : UsecaseArgs, MODEL> Usecase<ARGS, MODEL>.execute(
         args: ARGS,
         onSuccess: (MODEL) -> Unit = {},
         retry: () -> Unit
     ) {
         viewModelScope.launch {
-            // TODO: Dispatchersはinjectする
             execute(args)
-                .flowOn(Dispatchers.IO)
+                .flowOn(viewModelArgs.dispatcherIO)
                 .catch {
                     if (it is HttpException) {
                         val failure = Failure(it, it.toMessage(), retry)
@@ -60,3 +61,7 @@ abstract class BaseViewModel: ViewModel() {
         }
     }
 }
+
+class ViewModelArgs(
+    val dispatcherIO: CoroutineDispatcher
+)

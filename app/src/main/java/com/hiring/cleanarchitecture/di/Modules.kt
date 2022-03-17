@@ -9,6 +9,7 @@ import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUseca
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailUsecaseImpl
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUsecaseImpl
 import com.hiring.cleanarchitecture.domain.usecase.favorite.*
+import com.hiring.cleanarchitecture.view.ViewModelArgs
 import com.hiring.data.api.ArticleApi
 import com.hiring.data.db.ArticleDao
 import com.hiring.data.db.ArticleDataBase
@@ -22,11 +23,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -161,6 +165,31 @@ object UsecaseModule {
             articleRepository = articleRepository,
             favoriteRepository = favoriteRepository,
             articleMapper = articleMapper
+        )
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object DispatcherModule {
+    @Singleton
+    @Provides
+    @Named("DispatchersIO")
+    fun provideDispatchersIO(): CoroutineDispatcher {
+        return Dispatchers.IO
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object ViewModelModule {
+    @Singleton
+    @Provides
+    fun provideViewModelArgs(
+        @Named("DispatchersIO") dispatcherIO: CoroutineDispatcher
+    ): ViewModelArgs {
+        return ViewModelArgs(
+            dispatcherIO = dispatcherIO
         )
     }
 }

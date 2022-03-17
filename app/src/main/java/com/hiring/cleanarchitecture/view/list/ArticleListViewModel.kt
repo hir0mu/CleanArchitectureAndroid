@@ -8,14 +8,17 @@ import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUseca
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseArgs
 import com.hiring.cleanarchitecture.view.BaseViewModel
+import com.hiring.cleanarchitecture.view.ViewModelArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import javax.inject.Named
 
 @HiltViewModel
 class ArticleListViewModel @Inject constructor(
     private val usecase: FetchArticleListUsecase,
-    private val toggleUsecase: ToggleFavoriteUsecase
-) : BaseViewModel() {
+    private val toggleUsecase: ToggleFavoriteUsecase,
+    viewModelArgs: ViewModelArgs
+) : BaseViewModel(viewModelArgs) {
     companion object {
         private const val FIRST_PAGE = 1
     }
