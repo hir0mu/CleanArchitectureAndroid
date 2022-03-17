@@ -52,7 +52,7 @@ class ToggleFavoriteUsecaseImplTest {
         sut.execute(args(model)).collect()
 
         // Then
-        then(favoriteRepository).should().insertAll(any()) // TODO: Fix this
+        then(favoriteRepository).should().insertAll(any())
         then(favoriteRepository).should(never()).deleteByArticleId(ARTICLE_ID)
     }
 
