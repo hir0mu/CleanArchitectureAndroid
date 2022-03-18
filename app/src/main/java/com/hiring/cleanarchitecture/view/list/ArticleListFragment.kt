@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hiring.cleanarchitecture.R
 import com.hiring.cleanarchitecture.databinding.FragmentArticleListBinding
 import com.hiring.cleanarchitecture.databinding.ItemArticleBinding
+import com.hiring.cleanarchitecture.ext.setVisible
 import com.hiring.cleanarchitecture.ext.setupToolbar
 import com.hiring.cleanarchitecture.util.SimpleAdapter
 import com.hiring.cleanarchitecture.view.detail.ArticleDetailFragment
@@ -47,6 +48,7 @@ class ArticleListFragment: Fragment() {
                 }
             }
         })
+        binding.indicator.hide()
 
         viewModel.setup("android")
         viewModel.articles.observe(viewLifecycleOwner) { articles ->
@@ -64,6 +66,12 @@ class ArticleListFragment: Fragment() {
                     }
                 )
             })
+        }
+
+        viewModel.loading.observe(viewLifecycleOwner) {
+            when (it.execution) {
+                ArticleListViewModel.FetchArticleListExecution -> binding.indicator.setVisible(it.value)
+            }
         }
 
         viewModel.error.observe(viewLifecycleOwner) {
