@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hiring.cleanarchitecture.R
 import com.hiring.cleanarchitecture.databinding.FragmentFavoriteListBinding
 import com.hiring.cleanarchitecture.databinding.ItemFavoriteArticleBinding
+import com.hiring.cleanarchitecture.ext.setVisible
 import com.hiring.cleanarchitecture.ext.setupToolbar
 import com.hiring.cleanarchitecture.util.SimpleAdapter
+import com.hiring.cleanarchitecture.view.Execution
 import com.hiring.cleanarchitecture.view.detail.ArticleDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -51,6 +53,12 @@ class FavoriteListFragment: Fragment() {
 
         viewModel.error.observe(viewLifecycleOwner) {
             Timber.d("error: ${it.error}")
+        }
+
+        viewModel.loading.observe(viewLifecycleOwner) {
+            when (it.execution) {
+                FavoriteListViewModel.FetchFavoriteArticleExecution -> binding.indicator.setVisible(it.value)
+            }
         }
 
         viewModel.fetchFavorites()
