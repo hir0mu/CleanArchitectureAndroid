@@ -28,18 +28,28 @@ class ArticleListViewModel @Inject constructor(
     private val _articles: MutableLiveData<List<ArticleModel>> = MutableLiveData()
     val articles: LiveData<List<ArticleModel>> = _articles
 
+    private var isLoading = false
+
+    val articleCount: Int?
+    get() = articles.value?.size
+
     fun setup(itemId: String) {
         params = SearchParams(itemId = itemId, page = FIRST_PAGE)
     }
 
     fun fetchArticles() {
-        val old = if (params.page == FIRST_PAGE) listOf() else _articles.value.orEmpty()
+        if (isLoading) {
+            return
+        }
+        isLoading = true
 
         usecase.execute(
             args = FetchArticleListArgs(params.itemId, params.page),
             onSuccess = {
+                val old = if (params.page == FIRST_PAGE) listOf() else _articles.value.orEmpty()
                 _articles.postValue(old.merged(it))
                 params = params.countedUp()
+                isLoading = false
             },
             retry = { fetchArticles() }
         )
