@@ -16,4 +16,6 @@
     <string name="error_404">記事が見つかりません</string>
     <string name="error_500">サーバー側に異常が発生しました</string>
     <string name="error_default">通信エラーが発生しました</string>
+    <string name="error_network_not_available">ネットワーク接続がありません</string>
+    <string name="error_other">エラーが発生しました</string>
 </resources>

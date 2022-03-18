@@ -8,6 +8,7 @@ import com.hiring.cleanarchitecture.R
 import com.hiring.cleanarchitecture.domain.usecase.Usecase
 import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgs
 import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgsUnit
+import com.hiring.data.NetworkNotAvailableException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
@@ -51,9 +52,19 @@ abstract class BaseViewModel(
                 .onStart { _loading.postValue(Loading(execution, true)) }
                 .onCompletion { _loading.postValue(Loading(execution, false)) }
                 .catch {
-                    if (it is HttpException) {
-                        val failure = Failure(execution, it, it.toMessage(), retry)
-                        _error.postValue(failure)
+                    when (it) {
+                        is HttpException -> {
+                            val failure = Failure(execution, it, it.toMessage(), retry)
+                            _error.postValue(failure)
+                        }
+                        is NetworkNotAvailableException -> {
+                            val failure = Failure(execution, it, R.string.error_network_not_available, retry)
+                            _error.postValue(failure)
+                        }
+                        else -> {
+                            val failure = Failure(execution, it, R.string.error_other, retry)
+                            _error.postValue(failure)
+                        }
                     }
                 }
                 .collect { onSuccess(it) }
