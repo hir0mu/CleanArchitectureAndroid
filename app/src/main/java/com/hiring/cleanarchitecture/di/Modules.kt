@@ -9,7 +9,9 @@ import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUseca
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailUsecaseImpl
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUsecaseImpl
 import com.hiring.cleanarchitecture.domain.usecase.favorite.*
+import com.hiring.cleanarchitecture.util.NetworkManagerImpl
 import com.hiring.cleanarchitecture.view.ViewModelArgs
+import com.hiring.data.NetworkManager
 import com.hiring.data.api.ArticleApi
 import com.hiring.data.db.ArticleDao
 import com.hiring.data.db.ArticleDataBase
@@ -95,11 +97,19 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideArticleRepository(
-        api: ArticleApi
+        api: ArticleApi,
+        networkManager: NetworkManager
     ): ArticleRepository {
         return ArticleRepositoryImpl(
-            api = api
+            api = api,
+            networkManager = networkManager
         )
+    }
+
+    @Singleton
+    @Provides
+    fun provideNetworkManager(): NetworkManager {
+        return NetworkManagerImpl
     }
 }
 
