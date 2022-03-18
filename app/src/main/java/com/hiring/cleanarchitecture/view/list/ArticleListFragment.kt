@@ -69,7 +69,5 @@ class ArticleListFragment: Fragment() {
         viewModel.error.observe(viewLifecycleOwner) {
             Timber.d("error: ${it.error}")
         }
-
-        viewModel.fetchArticles()
     }
 }
