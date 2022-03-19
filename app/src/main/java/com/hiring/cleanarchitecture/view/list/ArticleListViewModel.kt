@@ -57,7 +57,10 @@ class ArticleListViewModel @Inject constructor(
                 params = params.countedUp()
                 isLoading = false
             },
-            retry = { fetchArticles() }
+            retry = {
+                isLoading = false
+                fetchArticles()
+            }
         )
     }
 

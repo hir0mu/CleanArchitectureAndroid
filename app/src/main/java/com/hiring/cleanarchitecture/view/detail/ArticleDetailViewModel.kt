@@ -8,6 +8,7 @@ import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailUse
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseArgs
 import com.hiring.cleanarchitecture.view.BaseViewModel
+import com.hiring.cleanarchitecture.view.Execution
 import com.hiring.cleanarchitecture.view.ViewModelArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,6 +19,9 @@ class ArticleDetailViewModel @Inject constructor(
     private val toggleFavoriteUsecase: ToggleFavoriteUsecase,
     viewModelArgs: ViewModelArgs
 ) : BaseViewModel(viewModelArgs) {
+
+    object FetchArticleDetailExecution : Execution
+
     private val _article: MutableLiveData<ArticleModel> = MutableLiveData(ArticleModel.EMPTY)
     val article: LiveData<ArticleModel> = _article
 
@@ -29,6 +33,7 @@ class ArticleDetailViewModel @Inject constructor(
 
     fun fetchDetail() {
         detailUsecase.execute(
+            execution = FetchArticleDetailExecution,
             args = FetchArticleDetailArgs(id),
             onSuccess = { _article.value = it },
             retry = { fetchDetail() }
