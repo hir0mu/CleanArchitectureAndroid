@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hiring.cleanarchitecture.R
 import com.hiring.cleanarchitecture.databinding.FragmentArticleListBinding
 import com.hiring.cleanarchitecture.databinding.ItemArticleBinding
@@ -36,7 +37,16 @@ class ArticleListFragment: Fragment() {
         setupToolbar(binding.toolbar, R.string.title_article_list)
 
         binding.articleList.adapter = adapter
-        binding.articleList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val manager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.articleList.layoutManager = manager
+        binding.articleList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val itemCount = viewModel.articleCount?.takeIf { it != 0 } ?: return
+                if (manager.findLastVisibleItemPosition() > itemCount - 2) {
+                    viewModel.fetchArticles()
+                }
+            }
+        })
 
         viewModel.setup("android")
         viewModel.articles.observe(viewLifecycleOwner) { articles ->
@@ -59,7 +69,5 @@ class ArticleListFragment: Fragment() {
         viewModel.error.observe(viewLifecycleOwner) {
             Timber.d("error: ${it.error}")
         }
-
-        viewModel.fetchArticles()
     }
 }
