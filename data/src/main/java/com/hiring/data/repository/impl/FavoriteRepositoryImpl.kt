@@ -15,8 +15,8 @@ class FavoriteRepositoryImpl(
         return articleDao.getArticlesByIds(articleIds)
     }
 
-    override suspend fun insertAll(vararg articles: FavArticle) {
-        return articleDao.insertAll(articles.toList())
+    override suspend fun insertAll(articles: List<FavArticle>) {
+        return articleDao.insertAll(articles)
     }
 
     override suspend fun deleteByArticleId(articleId: String) {

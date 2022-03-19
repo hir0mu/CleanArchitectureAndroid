@@ -2,67 +2,73 @@ package com.hiring.data.repository.impl
 
 import com.hiring.data.db.ArticleDao
 import com.hiring.data.entity.FavArticle
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.then
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Test
+import org.mockito.BDDMockito.then
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.given
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class FavoriteRepositoryImplTest {
+    @Mock
+    private lateinit var dao: ArticleDao
+
     private lateinit var sut: FavoriteRepositoryImpl
 
-    @Test
-    fun testGetAll() {
-        // GIVEN
-        val dao = mock<ArticleDao> {
-            onBlocking { getAll() } doReturn FAV_ARTICLES
-        }
+    @Before
+    fun setUp() {
+        MockitoAnnotations.openMocks(this)
         sut = FavoriteRepositoryImpl(dao)
+    }
+
+    @Test
+    fun testGetAll() = runTest {
+        // GIVEN
+        given(dao.getAll()).willReturn(FAV_ARTICLES)
 
         // WHEN
-        val result = runBlocking { sut.getAll() }
+        val result = sut.getAll()
 
         // THEN
         Assert.assertEquals(FAV_ARTICLES, result)
-        runBlocking { then(dao).should().getAll() }
+        then(dao).should().getAll()
     }
 
     @Test
-    fun testInsertAll() {
+    fun testInsertAll() = runTest {
         // GIVEN
-        val dao = mock<ArticleDao>()
-        sut = FavoriteRepositoryImpl(dao)
 
         // WHEN
-        runBlocking { sut.insertAll(FAV_ARTICLE) }
+        sut.insertAll(FAV_ARTICLES)
 
         // THEN
-        runBlocking { then(dao).should().insertAll(listOf(FAV_ARTICLE)) }
+        then(dao).should().insertAll(FAV_ARTICLES)
     }
 
     @Test
-    fun testDeleteByArticleId() {
+    fun testDeleteByArticleId() = runTest {
         // GIVEN
         val id = "id"
-        val dao = mock<ArticleDao>()
-        sut = FavoriteRepositoryImpl(dao)
 
         // WHEN
-        runBlocking { sut.deleteByArticleId(id) }
+        sut.deleteByArticleId(id)
 
         // THEN
-        runBlocking { then(dao).should().deleteByArticleId(id) }
+        then(dao).should().deleteByArticleId(id)
     }
 
     companion object {
-        private val FAV_ARTICLE = FavArticle(
-            id = "",
-            title = "title",
-            url = "url",
-            user = null,
+        private val FAV_ARTICLES = listOf(
+            FavArticle(
+                id = "",
+                title = "title",
+                url = "url",
+                user = null,
+            )
         )
-
-        private val FAV_ARTICLES = listOf(FAV_ARTICLE)
     }
 }
