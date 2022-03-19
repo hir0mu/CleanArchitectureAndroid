@@ -8,10 +8,10 @@ import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUseca
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseArgs
 import com.hiring.cleanarchitecture.view.BaseViewModel
+import com.hiring.cleanarchitecture.view.Execution
 import com.hiring.cleanarchitecture.view.ViewModelArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import javax.inject.Named
 
 @HiltViewModel
 class ArticleListViewModel @Inject constructor(
@@ -23,6 +23,8 @@ class ArticleListViewModel @Inject constructor(
         private const val FIRST_PAGE = 1
     }
 
+    object FetchArticleListExecution : Execution
+
     private var params = SearchParams.EMPTY
 
     private val _articles: MutableLiveData<List<ArticleModel>> = MutableLiveData()
@@ -31,7 +33,7 @@ class ArticleListViewModel @Inject constructor(
     private var isLoading = false
 
     val articleCount: Int?
-    get() = articles.value?.size
+        get() = articles.value?.size
 
     fun setup(itemId: String) {
         if (params == SearchParams.EMPTY) {
@@ -47,6 +49,7 @@ class ArticleListViewModel @Inject constructor(
         isLoading = true
 
         usecase.execute(
+            execution = FetchArticleListExecution,
             args = FetchArticleListArgs(params.itemId, params.page),
             onSuccess = {
                 val old = if (params.page == FIRST_PAGE) listOf() else _articles.value.orEmpty()

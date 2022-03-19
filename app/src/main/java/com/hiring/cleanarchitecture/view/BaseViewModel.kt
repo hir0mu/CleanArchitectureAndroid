@@ -11,6 +11,8 @@ import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgsUnit
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -21,11 +23,16 @@ abstract class BaseViewModel(
     private val _error: MutableLiveData<Failure> = MutableLiveData()
     val error: LiveData<Failure> = _error
 
+    private val _loading: MutableLiveData<Loading> = MutableLiveData()
+    val loading: LiveData<Loading> = _loading
+
     protected fun <MODEL> Usecase<UsecaseArgsUnit, MODEL>.execute(
+        execution: Execution = DefaultExecution,
         onSuccess: (MODEL) -> Unit = {},
         retry: () -> Unit
     ) {
         execute(
+            execution = execution,
             args = UsecaseArgsUnit,
             onSuccess = onSuccess,
             retry = retry
@@ -33,6 +40,7 @@ abstract class BaseViewModel(
     }
 
     protected fun <ARGS : UsecaseArgs, MODEL> Usecase<ARGS, MODEL>.execute(
+        execution: Execution = DefaultExecution,
         args: ARGS,
         onSuccess: (MODEL) -> Unit = {},
         retry: () -> Unit
@@ -40,9 +48,11 @@ abstract class BaseViewModel(
         viewModelScope.launch {
             execute(args)
                 .flowOn(viewModelArgs.dispatcherIO)
+                .onStart { _loading.postValue(Loading(execution, true)) }
+                .onCompletion { _loading.postValue(Loading(execution, false)) }
                 .catch {
                     if (it is HttpException) {
-                        val failure = Failure(it, it.toMessage(), retry)
+                        val failure = Failure(execution, it, it.toMessage(), retry)
                         _error.postValue(failure)
                     }
                 }

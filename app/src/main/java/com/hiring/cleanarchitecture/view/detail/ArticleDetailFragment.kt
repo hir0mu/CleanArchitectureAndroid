@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.hiring.cleanarchitecture.databinding.FragmentArticleDetailBinding
@@ -11,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class ArticleDetailFragment: Fragment() {
+class ArticleDetailFragment : Fragment() {
 
     companion object {
         private const val ARGS_ARTICLE_ID = "args_article_id"
@@ -24,6 +26,7 @@ class ArticleDetailFragment: Fragment() {
             }
         }
     }
+
     private val viewModel: ArticleDetailViewModel by viewModels()
     private lateinit var binding: FragmentArticleDetailBinding
 
@@ -40,6 +43,16 @@ class ArticleDetailFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.indicator.show()
+        binding.webView.webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                binding.indicator.setProgressCompat(newProgress, true)
+                if (newProgress == 100) {
+                    binding.indicator.hide()
+                }
+            }
+        }
 
         viewModel.setup(articleId)
 
