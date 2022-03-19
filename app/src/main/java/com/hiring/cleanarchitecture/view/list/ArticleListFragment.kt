@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hiring.cleanarchitecture.R
 import com.hiring.cleanarchitecture.databinding.FragmentArticleListBinding
 import com.hiring.cleanarchitecture.databinding.ItemArticleBinding
+import com.hiring.cleanarchitecture.ext.hideKeyboard
 import com.hiring.cleanarchitecture.ext.setVisible
 import com.hiring.cleanarchitecture.ext.setupToolbar
 import com.hiring.cleanarchitecture.ext.showErrorSnackBar
@@ -37,6 +39,9 @@ class ArticleListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(binding.toolbar, R.string.title_article_list)
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
         binding.articleList.adapter = adapter
         val manager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.articleList.layoutManager = manager
@@ -50,7 +55,18 @@ class ArticleListFragment : Fragment() {
         })
         binding.indicator.hide()
 
-        viewModel.setup("android")
+        binding.searchBar.setOnEditorActionListener { v, actionId, event ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_SEARCH -> {
+                    v.hideKeyboard()
+                    viewModel.fetchArticles(shouldReset = true)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        viewModel.setup()
         viewModel.articles.observe(viewLifecycleOwner) { articles ->
             adapter.updateItems(articles.map { article ->
                 ArticleItem(

@@ -25,28 +25,34 @@ class ArticleListViewModel @Inject constructor(
 
     object FetchArticleListExecution : Execution
 
-    private var params = SearchParams.EMPTY
-
     private val _articles: MutableLiveData<List<ArticleModel>> = MutableLiveData()
     val articles: LiveData<List<ArticleModel>> = _articles
 
+    val searchQuery: MutableLiveData<String> = MutableLiveData("android")
+
+    private var params = SearchParams.EMPTY
     private var isLoading = false
 
     val articleCount: Int?
         get() = articles.value?.size
 
-    fun setup(itemId: String) {
+    fun setup() {
         if (params == SearchParams.EMPTY) {
-            params = SearchParams(itemId = itemId, page = FIRST_PAGE)
+            params = SearchParams(itemId = searchQuery.value.orEmpty(), page = FIRST_PAGE)
             fetchArticles()
         }
     }
 
-    fun fetchArticles() {
+    fun fetchArticles(shouldReset: Boolean = false) {
         if (isLoading) {
             return
         }
         isLoading = true
+
+        if (shouldReset) {
+            params = SearchParams(itemId = searchQuery.value.orEmpty(), page = FIRST_PAGE)
+            _articles.value = listOf()
+        }
 
         usecase.execute(
             execution = FetchArticleListExecution,
@@ -59,7 +65,7 @@ class ArticleListViewModel @Inject constructor(
             },
             retry = {
                 isLoading = false
-                fetchArticles()
+                fetchArticles(shouldReset)
             }
         )
     }
