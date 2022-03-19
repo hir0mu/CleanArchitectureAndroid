@@ -18,4 +18,7 @@
     <string name="error_default">通信エラーが発生しました</string>
     <string name="error_network_not_available">ネットワーク接続がありません</string>
     <string name="error_other">エラーが発生しました</string>
+
+    <!-- 共通 -->
+    <string name="retry">リトライ</string>
 </resources>
