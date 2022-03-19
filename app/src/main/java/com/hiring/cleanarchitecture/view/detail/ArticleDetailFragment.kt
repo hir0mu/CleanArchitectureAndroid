@@ -9,8 +9,8 @@ import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.hiring.cleanarchitecture.databinding.FragmentArticleDetailBinding
+import com.hiring.cleanarchitecture.ext.showErrorSnackBar
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class ArticleDetailFragment : Fragment() {
@@ -65,7 +65,11 @@ class ArticleDetailFragment : Fragment() {
         }
 
         viewModel.error.observe(viewLifecycleOwner) {
-            Timber.d("error: ${it.error}")
+            when (it.execution) {
+                ArticleDetailViewModel.FetchArticleDetailExecution -> {
+                    showErrorSnackBar(it)
+                }
+            }
         }
 
         viewModel.fetchDetail()

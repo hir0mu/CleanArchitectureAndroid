@@ -12,11 +12,10 @@ import com.hiring.cleanarchitecture.databinding.FragmentFavoriteListBinding
 import com.hiring.cleanarchitecture.databinding.ItemFavoriteArticleBinding
 import com.hiring.cleanarchitecture.ext.setVisible
 import com.hiring.cleanarchitecture.ext.setupToolbar
+import com.hiring.cleanarchitecture.ext.showErrorSnackBar
 import com.hiring.cleanarchitecture.util.SimpleAdapter
-import com.hiring.cleanarchitecture.view.Execution
 import com.hiring.cleanarchitecture.view.detail.ArticleDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class FavoriteListFragment: Fragment() {
@@ -52,7 +51,11 @@ class FavoriteListFragment: Fragment() {
         }
 
         viewModel.error.observe(viewLifecycleOwner) {
-            Timber.d("error: ${it.error}")
+            when (it.execution) {
+                FavoriteListViewModel.FetchFavoriteArticleExecution -> {
+                    showErrorSnackBar(it)
+                }
+            }
         }
 
         viewModel.loading.observe(viewLifecycleOwner) {

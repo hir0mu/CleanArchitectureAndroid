@@ -13,13 +13,13 @@ import com.hiring.cleanarchitecture.databinding.FragmentArticleListBinding
 import com.hiring.cleanarchitecture.databinding.ItemArticleBinding
 import com.hiring.cleanarchitecture.ext.setVisible
 import com.hiring.cleanarchitecture.ext.setupToolbar
+import com.hiring.cleanarchitecture.ext.showErrorSnackBar
 import com.hiring.cleanarchitecture.util.SimpleAdapter
 import com.hiring.cleanarchitecture.view.detail.ArticleDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
-class ArticleListFragment: Fragment() {
+class ArticleListFragment : Fragment() {
     private val viewModel: ArticleListViewModel by viewModels()
     private lateinit var binding: FragmentArticleListBinding
     private val adapter = SimpleAdapter<ItemArticleBinding>(R.layout.item_article)
@@ -75,7 +75,11 @@ class ArticleListFragment: Fragment() {
         }
 
         viewModel.error.observe(viewLifecycleOwner) {
-            Timber.d("error: ${it.error}")
+            when (it.execution) {
+                ArticleListViewModel.FetchArticleListExecution -> {
+                    showErrorSnackBar(it)
+                }
+            }
         }
     }
 }
