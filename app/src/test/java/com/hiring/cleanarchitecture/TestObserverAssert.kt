@@ -38,12 +38,7 @@ class TestObserverAssert<T>(private val target: LiveData<T>) {
         return this
     }
 
-    fun shouldReceive(expected: T): TestObserverAssert<T> {
-        Assert.assertEquals(expected, values.firstOrNull())
-        return this
-    }
-
-    fun shouldReceiveAt(expected: T, at: Int): TestObserverAssert<T> {
+    fun shouldReceive(expected: T, at: Int = 0): TestObserverAssert<T> {
         Assert.assertEquals(expected, values[at])
         return this
     }
