@@ -37,7 +37,7 @@ class ArticleListViewModel @Inject constructor(
         get() = articles.value?.size
 
     fun setup() {
-        if (params == SearchParams.EMPTY) {
+        if (params.isEmpty()) {
             params = SearchParams(itemId = searchQuery.value.orEmpty(), page = FIRST_PAGE)
             fetchArticles()
         }
