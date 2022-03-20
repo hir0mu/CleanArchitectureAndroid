@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArticleDetailViewModel @Inject constructor(
-    private val detailUsecase: FetchArticleDetailUsecase,
+    private val fetchArticleDetailUsecase: FetchArticleDetailUsecase,
     private val toggleFavoriteUsecase: ToggleFavoriteUsecase,
     viewModelArgs: ViewModelArgs
 ) : BaseViewModel(viewModelArgs) {
@@ -32,7 +32,7 @@ class ArticleDetailViewModel @Inject constructor(
     }
 
     fun fetchDetail() {
-        detailUsecase.execute(
+        fetchArticleDetailUsecase.execute(
             execution = FetchArticleDetailExecution,
             args = FetchArticleDetailArgs(id),
             onSuccess = { _article.value = it },
