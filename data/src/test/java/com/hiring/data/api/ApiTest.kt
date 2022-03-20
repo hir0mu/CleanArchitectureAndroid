@@ -1,6 +1,6 @@
-package com.hiring.data
+package com.hiring.data.api
 
-import com.hiring.data.api.ArticleApi
+import com.hiring.data.TestUtils
 import com.hiring.data.entity.Article
 import kotlinx.coroutines.runBlocking
 import org.junit.Test

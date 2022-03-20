@@ -1,5 +1,6 @@
 package com.hiring.data.repository.impl
 
+import com.hiring.data.NetworkManager
 import com.hiring.data.api.ArticleApi
 import com.hiring.data.entity.Article
 import com.hiring.data.entity.ArticleGroup
@@ -20,12 +21,16 @@ class ArticleRepositoryImplTest {
 
     @Mock
     private lateinit var api: ArticleApi
+
+    @Mock
+    private lateinit var networkManager: NetworkManager
+
     private lateinit var sut: ArticleRepositoryImpl
 
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        sut = ArticleRepositoryImpl(api)
+        sut = ArticleRepositoryImpl(api, networkManager)
     }
 
     @Test
@@ -33,6 +38,7 @@ class ArticleRepositoryImplTest {
         // GIVEN
         val id = "id"
         given(api.articleDetail(id)).willReturn(ARTICLE)
+        given(networkManager.isConnected).willReturn(true)
 
         // WHEN
         val result = sut.getArticleDetail(id)
@@ -50,6 +56,7 @@ class ArticleRepositoryImplTest {
         val page = 0
         val perPage = 20
         given(api.articles(itemId, page, perPage)).willReturn(ARTICLES)
+        given(networkManager.isConnected).willReturn(true)
 
         // WHEN
         val result = sut.getArticles(itemId, page, perPage)
