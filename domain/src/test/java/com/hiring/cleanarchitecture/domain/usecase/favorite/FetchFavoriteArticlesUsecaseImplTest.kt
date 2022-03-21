@@ -36,7 +36,7 @@ class FetchFavoriteArticlesUsecaseImplTest {
     }
 
     @Test
-    fun fetchFavoriteArticles_hasFavorite() = runTest {
+    fun testFetchFavoriteArticles_hasFavorite() = runTest {
         // Given
         given(favoriteRepository.getAll()).willReturn(listOf(favArticle()))
         val model = listOf(articleModel(true))
@@ -50,7 +50,7 @@ class FetchFavoriteArticlesUsecaseImplTest {
     }
 
     @Test
-    fun fetchFavoriteArticles_noFavorite() = runTest {
+    fun testFetchFavoriteArticles_noFavorite() = runTest {
         // Given
         given(favoriteRepository.getAll()).willReturn(listOf())
         val model = listOf<ArticleModel>()
