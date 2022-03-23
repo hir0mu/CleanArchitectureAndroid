@@ -61,7 +61,8 @@ class ArticleDetailFragment : Fragment() {
         }
 
         viewModel.article.observe(viewLifecycleOwner) {
-            binding.article = it
+            binding.article = it.article
+            binding.isFavorite = it.isFavorite
         }
 
         viewModel.error.observe(viewLifecycleOwner) {

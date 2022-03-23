@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hiring.cleanarchitecture.R
+import com.hiring.cleanarchitecture.domain.businessmodel.BusinessModel
 import com.hiring.cleanarchitecture.domain.usecase.Usecase
 import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgs
 import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgsUnit
@@ -27,7 +28,7 @@ abstract class BaseViewModel(
     private val _loading: MutableLiveData<Loading> = MutableLiveData()
     val loading: LiveData<Loading> = _loading
 
-    protected fun <MODEL> Usecase<UsecaseArgsUnit, MODEL>.execute(
+    protected fun <MODEL: BusinessModel> Usecase<UsecaseArgsUnit, MODEL>.execute(
         execution: Execution = DefaultExecution,
         onSuccess: (MODEL) -> Unit = {},
         retry: () -> Unit
@@ -40,7 +41,7 @@ abstract class BaseViewModel(
         )
     }
 
-    protected fun <ARGS : UsecaseArgs, MODEL> Usecase<ARGS, MODEL>.execute(
+    protected fun <ARGS : UsecaseArgs, MODEL: BusinessModel> Usecase<ARGS, MODEL>.execute(
         execution: Execution = DefaultExecution,
         args: ARGS,
         onSuccess: (MODEL) -> Unit = {},

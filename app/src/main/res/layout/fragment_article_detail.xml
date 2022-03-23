@@ -7,6 +7,10 @@
         <variable
             name="article"
             type="com.hiring.cleanarchitecture.domain.model.ArticleModel" />
+
+        <variable
+            name="isFavorite"
+            type="Boolean" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -42,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
-            android:src="@{article.isFavorite ? @drawable/ic_favorite_on : @drawable/ic_favorite_off}"
+            android:src="@{isFavorite ? @drawable/ic_favorite_on : @drawable/ic_favorite_off}"
             app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
