@@ -1,19 +1,18 @@
 package com.hiring.cleanarchitecture.domain.mapper
 
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
-import com.hiring.data.entity.Article
-import com.hiring.data.entity.User
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
 class ArticleMapperTest {
 
-    private lateinit var sut: ArticleMapper
+    private lateinit var sut: ArticleBusinessModelMapper
     @Before
     fun setUp() {
-        sut = ArticleMapper()
+        sut = ArticleBusinessModelMapper()
     }
 
     @Test
@@ -24,7 +23,7 @@ class ArticleMapperTest {
         val expected = articleModel(isFavorite)
 
         // When
-        val result = sut.transform(entity, isFavorite)
+        val result = sut.map(entity, isFavorite)
 
         // Then
         assertEquals(expected, result)
@@ -38,7 +37,7 @@ class ArticleMapperTest {
         val expected = articleModel(isFavorite)
 
         // When
-        val result = sut.transform(entity, isFavorite)
+        val result = sut.map(entity, isFavorite)
 
         // Then
         assertEquals(expected, result)
@@ -52,30 +51,15 @@ class ArticleMapperTest {
         private const val USER_NAME = "user_name"
         private const val USER_IMAGE_URL = "user_image_url"
 
-        private fun article() = Article(
-            renderedBody = "renderedBody",
-            body = "body",
-            coediting = false,
-            commentsCount = 1,
-            createdAt = "createdAt",
-            group = null,
-            id = ARTICLE_ID,
-            likesCount = 1,
-            private = false,
-            reactionsCount = 1,
-            tags = listOf(),
-            title = ARTICLE_TITLE,
-            updatedAt = "updatedAt",
-            url = ARTICLE_URL,
-            user = User(id = USER_ID, name = USER_NAME, profileImageUrl = USER_IMAGE_URL),
-            pageViewsCount = 0
-        )
-
-        private fun articleModel(isFavorite: Boolean) = ArticleModel(
+        private fun article() = ArticleModel(
             id = ARTICLE_ID,
             title = ARTICLE_TITLE,
             url = ARTICLE_URL,
             user = UserModel(id = USER_ID, name = USER_NAME, profileImageUrl = USER_IMAGE_URL),
+        )
+
+        private fun articleModel(isFavorite: Boolean) = ArticleBusinessModel(
+            article = article(),
             isFavorite = isFavorite
         )
     }

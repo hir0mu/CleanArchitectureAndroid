@@ -1,12 +1,13 @@
 package com.hiring.cleanarchitecture.domain.usecase.favorite
 
-import com.hiring.cleanarchitecture.domain.mapper.FavoriteArticleMapper
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleListBusinessModel
+import com.hiring.cleanarchitecture.domain.mapper.ArticleBusinessModelMapper
+import com.hiring.cleanarchitecture.domain.mapper.ArticleListBusinessModelMapper
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
+import com.hiring.cleanarchitecture.domain.repository.FavoriteRepository
 import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgsUnit
-import com.hiring.data.entity.FavArticle
-import com.hiring.data.entity.User
-import com.hiring.data.repository.FavoriteRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -31,15 +32,16 @@ class FetchFavoriteArticlesUsecaseImplTest {
         MockitoAnnotations.openMocks(this)
         sut = FetchFavoriteArticleListUsecaseImpl(
             favoriteRepository,
-            FavoriteArticleMapper()
+            ArticleBusinessModelMapper(),
+            ArticleListBusinessModelMapper()
         )
     }
 
     @Test
     fun testFetchFavoriteArticles_hasFavorite() = runTest {
         // Given
-        given(favoriteRepository.getAll()).willReturn(listOf(favArticle()))
-        val model = listOf(articleModel(true))
+        given(favoriteRepository.getAll()).willReturn(listOf(article()))
+        val model = articleListModel(true)
 
         // When
         val result = sut.execute(UsecaseArgsUnit).first()
@@ -53,7 +55,7 @@ class FetchFavoriteArticlesUsecaseImplTest {
     fun testFetchFavoriteArticles_noFavorite() = runTest {
         // Given
         given(favoriteRepository.getAll()).willReturn(listOf())
-        val model = listOf<ArticleModel>()
+        val model = ArticleListBusinessModel.EMPTY
 
         // When
         val result = sut.execute(UsecaseArgsUnit).first()
@@ -71,20 +73,21 @@ class FetchFavoriteArticlesUsecaseImplTest {
         private const val USER_NAME = "user_name"
         private const val USER_IMAGE_URL = "user_image_url"
 
-        private fun favArticle() = FavArticle(
-            createdAt = 0,
-            id = ARTICLE_ID,
-            title = ARTICLE_TITLE,
-            url = ARTICLE_URL,
-            user = User(id = USER_ID, name = USER_NAME, profileImageUrl = USER_IMAGE_URL),
-        )
-
-        private fun articleModel(isFavorite: Boolean) = ArticleModel(
+        private fun article() = ArticleModel(
             id = ARTICLE_ID,
             title = ARTICLE_TITLE,
             url = ARTICLE_URL,
             user = UserModel(id = USER_ID, name = USER_NAME, profileImageUrl = USER_IMAGE_URL),
+        )
+
+        private fun articleModel(isFavorite: Boolean) = ArticleBusinessModel(
+            article = article(),
             isFavorite = isFavorite
+        )
+
+
+        private fun articleListModel(isFavorite: Boolean) = ArticleListBusinessModel(
+            articles = listOf(articleModel(isFavorite)),
         )
     }
 }

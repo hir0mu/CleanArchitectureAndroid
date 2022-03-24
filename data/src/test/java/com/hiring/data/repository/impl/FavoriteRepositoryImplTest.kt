@@ -1,7 +1,12 @@
 package com.hiring.data.repository.impl
 
+import com.hiring.cleanarchitecture.domain.model.ArticleModel
+import com.hiring.cleanarchitecture.domain.model.UserModel
 import com.hiring.data.db.ArticleDao
 import com.hiring.data.entity.FavArticle
+import com.hiring.data.entity.User
+import com.hiring.data.mapper.ArticleModelMapper
+import com.hiring.data.repository.FavoriteRepositoryImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
@@ -10,6 +15,7 @@ import org.junit.Test
 import org.mockito.BDDMockito.then
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.any
 import org.mockito.kotlin.given
 
 @ExperimentalCoroutinesApi
@@ -22,7 +28,7 @@ class FavoriteRepositoryImplTest {
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        sut = FavoriteRepositoryImpl(dao)
+        sut = FavoriteRepositoryImpl(dao, ArticleModelMapper())
     }
 
     @Test
@@ -34,7 +40,7 @@ class FavoriteRepositoryImplTest {
         val result = sut.getAll()
 
         // THEN
-        Assert.assertEquals(FAV_ARTICLES, result)
+        Assert.assertEquals(ARTICLE_MODELS, result)
         then(dao).should().getAll()
     }
 
@@ -43,10 +49,10 @@ class FavoriteRepositoryImplTest {
         // GIVEN
 
         // WHEN
-        sut.insertAll(FAV_ARTICLES)
+        sut.insertAll(ARTICLE_MODELS)
 
         // THEN
-        then(dao).should().insertAll(FAV_ARTICLES)
+        then(dao).should().insertAll(any())
     }
 
     @Test
@@ -67,7 +73,24 @@ class FavoriteRepositoryImplTest {
                 id = "",
                 title = "title",
                 url = "url",
-                user = null,
+                user = User(
+                    id = "id",
+                    name = "name",
+                    profileImageUrl = "url"
+                ),
+            )
+        )
+
+        private val ARTICLE_MODELS = listOf(
+            ArticleModel(
+                id = "",
+                title = "title",
+                url = "url",
+                user = UserModel(
+                    id = "id",
+                    name = "name",
+                    profileImageUrl = "url"
+                ),
             )
         )
     }

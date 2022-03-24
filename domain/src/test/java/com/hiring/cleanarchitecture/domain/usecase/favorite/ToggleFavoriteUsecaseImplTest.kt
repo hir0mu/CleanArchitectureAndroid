@@ -1,8 +1,9 @@
 package com.hiring.cleanarchitecture.domain.usecase.favorite
 
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
-import com.hiring.data.repository.FavoriteRepository
+import com.hiring.cleanarchitecture.domain.repository.FavoriteRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.test.runTest
@@ -65,14 +66,18 @@ class ToggleFavoriteUsecaseImplTest {
         private const val USER_NAME = "user_name"
         private const val USER_IMAGE_URL = "user_image_url"
 
-        private fun articleModel(isFavorite: Boolean) = ArticleModel(
+        private fun article() = ArticleModel(
             id = ARTICLE_ID,
             title = ARTICLE_TITLE,
             url = ARTICLE_URL,
             user = UserModel(id = USER_ID, name = USER_NAME, profileImageUrl = USER_IMAGE_URL),
+        )
+
+        private fun articleModel(isFavorite: Boolean) = ArticleBusinessModel(
+            article = article(),
             isFavorite = isFavorite
         )
 
-        private fun args(articleModel: ArticleModel) = ToggleFavoriteUsecaseArgs(articleModel)
+        private fun args(articleModel: ArticleBusinessModel) = ToggleFavoriteUsecaseArgs(articleModel)
     }
 }
