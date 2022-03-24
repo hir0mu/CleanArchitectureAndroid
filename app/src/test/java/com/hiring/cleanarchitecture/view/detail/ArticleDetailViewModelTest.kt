@@ -21,7 +21,7 @@ import org.mockito.kotlin.given
 import org.mockito.kotlin.verify
 
 @ExperimentalCoroutinesApi
-class ArticleDetailViewModelTest: ViewModelTest() {
+class ArticleDetailViewModelTest : ViewModelTest() {
 
     private lateinit var sut: ArticleDetailViewModel
 

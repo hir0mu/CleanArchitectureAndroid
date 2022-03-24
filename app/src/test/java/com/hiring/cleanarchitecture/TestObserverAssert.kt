@@ -24,7 +24,11 @@ class TestObserverAssert<T>(private val target: LiveData<T>) {
         target.observeForever(observer)
     }
 
-    fun await(count: Int = 1, timeout: Long = 1, unit: TimeUnit = TimeUnit.SECONDS): TestObserverAssert<T> {
+    fun await(
+        count: Int = 1,
+        timeout: Long = 1,
+        unit: TimeUnit = TimeUnit.SECONDS
+    ): TestObserverAssert<T> {
         val valueCount = values.size
         if (valueCount >= count) {
             return this

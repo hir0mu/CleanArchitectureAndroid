@@ -23,7 +23,7 @@ class ArticleDetailViewModel @Inject constructor(
 
     object FetchArticleDetailExecution : Execution
 
-    private val _article: MutableLiveData<ArticleBusinessModel> = MutableLiveData(ArticleBusinessModel.EMPTY)
+    private val _article = MutableLiveData(ArticleBusinessModel.EMPTY)
     val article: LiveData<ArticleBusinessModel> = _article
 
     private lateinit var id: String

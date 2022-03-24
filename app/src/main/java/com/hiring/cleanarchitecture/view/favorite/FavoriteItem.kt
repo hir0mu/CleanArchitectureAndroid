@@ -2,13 +2,12 @@ package com.hiring.cleanarchitecture.view.favorite
 
 import com.hiring.cleanarchitecture.databinding.ItemFavoriteArticleBinding
 import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
-import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.util.SimpleItem
 
 class FavoriteItem(
     private val model: ArticleBusinessModel,
     private val onItemClick: (ArticleBusinessModel) -> Unit
-): SimpleItem<ItemFavoriteArticleBinding>() {
+) : SimpleItem<ItemFavoriteArticleBinding>() {
     override fun bind(binding: ItemFavoriteArticleBinding) {
         binding.article = model.article
         binding.root.setOnClickListener { onItemClick(model) }

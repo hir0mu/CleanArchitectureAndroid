@@ -10,6 +10,7 @@ import org.junit.Test
 class ArticleMapperTest {
 
     private lateinit var sut: ArticleBusinessModelMapper
+
     @Before
     fun setUp() {
         sut = ArticleBusinessModelMapper()

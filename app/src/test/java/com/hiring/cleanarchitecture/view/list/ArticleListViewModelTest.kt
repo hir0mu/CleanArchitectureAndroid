@@ -212,7 +212,8 @@ class ArticleListViewModelTest : ViewModelTest() {
 
         private val ARTICLE_LIST_1 = ArticleListBusinessModel(articles = listOf(ARTICLE_MODEL_1))
         private val ARTICLE_LIST_2 = ArticleListBusinessModel(articles = listOf(ARTICLE_MODEL_2))
-        private val ARTICLE_LIST_ALL: List<ArticleBusinessModel> = listOf(ARTICLE_MODEL_1, ARTICLE_MODEL_2)
+        private val ARTICLE_LIST_ALL: List<ArticleBusinessModel> =
+            listOf(ARTICLE_MODEL_1, ARTICLE_MODEL_2)
 
         private val toggleFavoriteArgs = ToggleFavoriteUsecaseArgs(ARTICLE_MODEL_1)
 

@@ -28,7 +28,7 @@ abstract class BaseViewModel(
     private val _loading: MutableLiveData<Loading> = MutableLiveData()
     val loading: LiveData<Loading> = _loading
 
-    protected fun <MODEL: BusinessModel> Usecase<UsecaseArgsUnit, MODEL>.execute(
+    protected fun <MODEL : BusinessModel> Usecase<UsecaseArgsUnit, MODEL>.execute(
         execution: Execution = DefaultExecution,
         onSuccess: (MODEL) -> Unit = {},
         retry: () -> Unit
@@ -41,7 +41,7 @@ abstract class BaseViewModel(
         )
     }
 
-    protected fun <ARGS : UsecaseArgs, MODEL: BusinessModel> Usecase<ARGS, MODEL>.execute(
+    protected fun <ARGS : UsecaseArgs, MODEL : BusinessModel> Usecase<ARGS, MODEL>.execute(
         execution: Execution = DefaultExecution,
         args: ARGS,
         onSuccess: (MODEL) -> Unit = {},
@@ -59,7 +59,8 @@ abstract class BaseViewModel(
                             _error.postValue(failure)
                         }
                         is NetworkNotAvailableException -> {
-                            val failure = Failure(execution, it, R.string.error_network_not_available, retry)
+                            val failure =
+                                Failure(execution, it, R.string.error_network_not_available, retry)
                             _error.postValue(failure)
                         }
                         else -> {

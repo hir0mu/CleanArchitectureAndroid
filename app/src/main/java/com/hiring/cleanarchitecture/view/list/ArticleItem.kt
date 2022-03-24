@@ -2,14 +2,13 @@ package com.hiring.cleanarchitecture.view.list
 
 import com.hiring.cleanarchitecture.databinding.ItemArticleBinding
 import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
-import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.util.SimpleItem
 
 class ArticleItem(
     private var articleModel: ArticleBusinessModel,
     private val onItemClick: (ArticleBusinessModel) -> Unit,
     private val onCheckedChange: (ArticleBusinessModel) -> Unit
-): SimpleItem<ItemArticleBinding>() {
+) : SimpleItem<ItemArticleBinding>() {
     override fun bind(binding: ItemArticleBinding) {
         binding.article = articleModel.article
         binding.favorite.isChecked = articleModel.isFavorite

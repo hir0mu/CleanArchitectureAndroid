@@ -12,7 +12,7 @@ class ArticleRepositoryImpl(
     private val api: ArticleApi,
     private val networkManager: NetworkManager,
     private val articleMapper: ArticleModelMapper
-): ArticleRepository {
+) : ArticleRepository {
     companion object {
         private val detailCaches = MemoryCache<ArticleEntity>()
     }
