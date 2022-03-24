@@ -4,10 +4,10 @@ import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
 import com.hiring.data.NetworkManager
 import com.hiring.data.api.ArticleApi
-import com.hiring.data.entity.Article
-import com.hiring.data.entity.ArticleGroup
-import com.hiring.data.entity.ArticleTag
-import com.hiring.data.entity.User
+import com.hiring.data.entity.ArticleEntity
+import com.hiring.data.entity.ArticleGroupEntity
+import com.hiring.data.entity.ArticleTagEntity
+import com.hiring.data.entity.UserEntity
 import com.hiring.data.mapper.ArticleModelMapper
 import com.hiring.data.repository.ArticleRepositoryImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -71,7 +71,7 @@ class ArticleRepositoryImplTest {
     }
 
     companion object {
-        private val GROUP = ArticleGroup(
+        private val GROUP = ArticleGroupEntity(
             createdAt = "createdAt",
             id = 0,
             name = "name",
@@ -80,12 +80,12 @@ class ArticleRepositoryImplTest {
             urlName = "urlName",
         )
 
-        private val TAG = ArticleTag(
+        private val TAG = ArticleTagEntity(
             name = "name",
             versions = listOf()
         )
 
-        private val USER = User(
+        private val USER = UserEntity(
             description = "description",
             facebookId = "facebookId",
             followeesCount = 0,
@@ -104,7 +104,7 @@ class ArticleRepositoryImplTest {
             websiteUrl = "websiteUrl"
         )
 
-        private val ARTICLE = Article(
+        private val ARTICLE = ArticleEntity(
             renderedBody = "renderedBody",
             body = "body",
             coediting = false,

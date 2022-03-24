@@ -5,7 +5,7 @@ import com.hiring.cleanarchitecture.domain.repository.ArticleRepository
 import com.hiring.data.MemoryCache
 import com.hiring.data.NetworkManager
 import com.hiring.data.api.ArticleApi
-import com.hiring.data.entity.Article
+import com.hiring.data.entity.ArticleEntity
 import com.hiring.data.mapper.ArticleModelMapper
 
 class ArticleRepositoryImpl(
@@ -14,7 +14,7 @@ class ArticleRepositoryImpl(
     private val articleMapper: ArticleModelMapper
 ): ArticleRepository {
     companion object {
-        private val detailCaches = MemoryCache<Article>()
+        private val detailCaches = MemoryCache<ArticleEntity>()
     }
 
     override suspend fun getArticles(itemId: String, page: Int, perPage: Int): List<ArticleModel> {

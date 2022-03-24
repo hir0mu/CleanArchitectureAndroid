@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class User(
+data class UserEntity(
     @SerialName("description")
     val description: String? = null,
     @SerialName("facebook_id")

@@ -3,8 +3,8 @@ package com.hiring.data.repository
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.repository.FavoriteRepository
 import com.hiring.data.db.ArticleDao
-import com.hiring.data.entity.FavArticle
-import com.hiring.data.entity.User
+import com.hiring.data.entity.FavArticleEntity
+import com.hiring.data.entity.UserEntity
 import com.hiring.data.mapper.ArticleModelMapper
 
 class FavoriteRepositoryImpl(
@@ -27,11 +27,11 @@ class FavoriteRepositoryImpl(
 
     override suspend fun insertAll(articles: List<ArticleModel>) {
         val favs = articles.map {
-            FavArticle(
+            FavArticleEntity(
                 id = it.id,
                 title = it.title,
                 url = it.url,
-                user = User(
+                user = UserEntity(
                     id = it.user.id,
                     name = it.user.name,
                     profileImageUrl = it.user.profileImageUrl

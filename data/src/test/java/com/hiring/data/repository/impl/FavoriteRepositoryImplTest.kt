@@ -3,8 +3,8 @@ package com.hiring.data.repository.impl
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
 import com.hiring.data.db.ArticleDao
-import com.hiring.data.entity.FavArticle
-import com.hiring.data.entity.User
+import com.hiring.data.entity.FavArticleEntity
+import com.hiring.data.entity.UserEntity
 import com.hiring.data.mapper.ArticleModelMapper
 import com.hiring.data.repository.FavoriteRepositoryImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -69,11 +69,11 @@ class FavoriteRepositoryImplTest {
 
     companion object {
         private val FAV_ARTICLES = listOf(
-            FavArticle(
+            FavArticleEntity(
                 id = "",
                 title = "title",
                 url = "url",
-                user = User(
+                user = UserEntity(
                     id = "id",
                     name = "name",
                     profileImageUrl = "url"

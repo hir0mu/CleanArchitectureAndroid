@@ -1,6 +1,6 @@
 package com.hiring.data.api
 
-import com.hiring.data.entity.Article
+import com.hiring.data.entity.ArticleEntity
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -11,10 +11,10 @@ interface ArticleApi {
         @Path("itemId") itemId: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
-    ): List<Article>
+    ): List<ArticleEntity>
 
     @GET("items/{id}")
     suspend fun articleDetail(
         @Path("id") id: String
-    ): Article
+    ): ArticleEntity
 }

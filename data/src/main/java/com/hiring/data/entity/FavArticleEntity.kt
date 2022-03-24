@@ -8,7 +8,7 @@ import com.hiring.data.db.UserConverters
 
 @Entity(tableName = "fav_article")
 @TypeConverters(UserConverters::class)
-data class FavArticle(
+data class FavArticleEntity(
     @PrimaryKey
     var id: String = "",
 
@@ -19,7 +19,7 @@ data class FavArticle(
     var url: String = "",
 
     @ColumnInfo(name = "user")
-    var user: User? = null,
+    var user: UserEntity? = null,
 
     @ColumnInfo(name = "created_at")
     var createdAt: Long = System.currentTimeMillis()
