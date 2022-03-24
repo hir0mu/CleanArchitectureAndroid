@@ -1,6 +1,8 @@
 package com.hiring.cleanarchitecture.view.detail
 
 import com.hiring.cleanarchitecture.ViewModelTest
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
+import com.hiring.cleanarchitecture.domain.businessmodel.BusinessModelUnit
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailArgs
@@ -41,7 +43,7 @@ class ArticleDetailViewModelTest: ViewModelTest() {
     fun testFetchDetail() {
         // Given
         given(fetchArticleDetailUsecase.execute(fetchArticleDetailArgs))
-            .willReturn(flowOf(ARTICLE_MODEL))
+            .willReturn(flowOf(ARTICLE_BUSINESS_MODEL))
         val testObserver = sut.article.testObserver()
         sut.setup(ID)
 
@@ -50,8 +52,8 @@ class ArticleDetailViewModelTest: ViewModelTest() {
 
         // Then
         testObserver.await(count = 2)
-            .shouldReceive(ArticleModel.EMPTY, 0)
-            .shouldReceive(ARTICLE_MODEL, 1)
+            .shouldReceive(ArticleBusinessModel.EMPTY, 0)
+            .shouldReceive(ARTICLE_BUSINESS_MODEL, 1)
             .end()
 
         verify(fetchArticleDetailUsecase).execute(fetchArticleDetailArgs)
@@ -71,7 +73,7 @@ class ArticleDetailViewModelTest: ViewModelTest() {
 
         // Then
         testObserver.await(count = 1)
-            .shouldReceive(ArticleModel.EMPTY, 0)
+            .shouldReceive(ArticleBusinessModel.EMPTY, 0)
             .withValueCount(1)
             .end()
 
@@ -86,9 +88,9 @@ class ArticleDetailViewModelTest: ViewModelTest() {
     fun testToggleFavorite() {
         // Given
         given(fetchArticleDetailUsecase.execute(fetchArticleDetailArgs))
-            .willReturn(flowOf(ARTICLE_MODEL))
+            .willReturn(flowOf(ARTICLE_BUSINESS_MODEL))
         given(toggleFavoriteUsecase.execute(toggleFavoriteArgs))
-            .willReturn(flowOf(Unit))
+            .willReturn(flowOf(BusinessModelUnit))
         val testObserver = sut.article.testObserver()
         sut.setup(ID)
         sut.fetchDetail()
@@ -105,7 +107,7 @@ class ArticleDetailViewModelTest: ViewModelTest() {
     fun testToggleFavorite_Error() {
         // Given
         given(fetchArticleDetailUsecase.execute(fetchArticleDetailArgs))
-            .willReturn(flowOf(ARTICLE_MODEL))
+            .willReturn(flowOf(ARTICLE_BUSINESS_MODEL))
         given(toggleFavoriteUsecase.execute(toggleFavoriteArgs))
             .willReturn(flowOfException())
         val testObserver = sut.article.testObserver()
@@ -126,19 +128,21 @@ class ArticleDetailViewModelTest: ViewModelTest() {
 
     companion object {
         private const val ID = "id"
-        private val ARTICLE_MODEL = ArticleModel(
-            id = ID,
-            title = "title",
-            url = "url",
-            user = UserModel(
-                id = "id",
-                name = "name",
-                profileImageUrl = "profileImageUrl"
+        private val ARTICLE_BUSINESS_MODEL = ArticleBusinessModel(
+            article = ArticleModel(
+                id = ID,
+                title = "title",
+                url = "url",
+                user = UserModel(
+                    id = "id",
+                    name = "name",
+                    profileImageUrl = "profileImageUrl"
+                ),
             ),
             isFavorite = false
         )
 
         private val fetchArticleDetailArgs = FetchArticleDetailArgs(id = ID)
-        private val toggleFavoriteArgs = ToggleFavoriteUsecaseArgs(ARTICLE_MODEL)
+        private val toggleFavoriteArgs = ToggleFavoriteUsecaseArgs(ARTICLE_BUSINESS_MODEL)
     }
 }

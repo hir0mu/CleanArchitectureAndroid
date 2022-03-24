@@ -1,6 +1,9 @@
 package com.hiring.cleanarchitecture.view.list
 
 import com.hiring.cleanarchitecture.ViewModelTest
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleListBusinessModel
+import com.hiring.cleanarchitecture.domain.businessmodel.BusinessModelUnit
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListArgs
@@ -50,7 +53,7 @@ class ArticleListViewModelTest : ViewModelTest() {
 
         // Then
         testObserver.await()
-            .shouldReceive(ARTICLE_LIST_1)
+            .shouldReceive(ARTICLE_LIST_1.articles)
             .end()
 
         verify(fetchArticleListUsecase).execute(fetchArticleListArgs(itemId, 1))
@@ -96,7 +99,7 @@ class ArticleListViewModelTest : ViewModelTest() {
 
         // Then
         testObserver.await(count = 2)
-            .shouldReceive(ARTICLE_LIST_1, 0)
+            .shouldReceive(ARTICLE_LIST_1.articles, 0)
             .shouldReceive(ARTICLE_LIST_ALL, 1)
             .withValueCount(2)
             .end()
@@ -122,7 +125,7 @@ class ArticleListViewModelTest : ViewModelTest() {
 
         // Then
         testObserver.await(count = 1)
-            .shouldReceive(ARTICLE_LIST_1, 0)
+            .shouldReceive(ARTICLE_LIST_1.articles, 0)
             .withValueCount(1)
             .end()
 
@@ -141,7 +144,7 @@ class ArticleListViewModelTest : ViewModelTest() {
         given(fetchArticleListUsecase.execute(fetchArticleListArgs(itemId, 1)))
             .willReturn(flowOf(ARTICLE_LIST_1))
         given(toggleFavoriteUsecase.execute(toggleFavoriteArgs))
-            .willReturn(flowOf(Unit))
+            .willReturn(flowOf(BusinessModelUnit))
         val testObserver = sut.articles.testObserver()
 
         // When
@@ -179,33 +182,37 @@ class ArticleListViewModelTest : ViewModelTest() {
     }
 
     companion object {
-        private val ARTICLE_MODEL_1 = ArticleModel(
-            id = "id 1",
-            title = "title 1",
-            url = "url 1",
-            user = UserModel(
+        private val ARTICLE_MODEL_1 = ArticleBusinessModel(
+            article = ArticleModel(
                 id = "id 1",
-                name = "name 1",
-                profileImageUrl = "profileImageUrl 1"
+                title = "title 1",
+                url = "url 1",
+                user = UserModel(
+                    id = "id 1",
+                    name = "name 1",
+                    profileImageUrl = "profileImageUrl 1"
+                ),
             ),
             isFavorite = true
         )
 
-        private val ARTICLE_MODEL_2 = ArticleModel(
-            id = "id 2",
-            title = "title 2",
-            url = "url 2",
-            user = UserModel(
+        private val ARTICLE_MODEL_2 = ArticleBusinessModel(
+            article = ArticleModel(
                 id = "id 2",
-                name = "name 2",
-                profileImageUrl = "profileImageUrl 2"
+                title = "title 2",
+                url = "url 2",
+                user = UserModel(
+                    id = "id 2",
+                    name = "name 2",
+                    profileImageUrl = "profileImageUrl 2"
+                ),
             ),
             isFavorite = true
         )
 
-        private val ARTICLE_LIST_1: List<ArticleModel> = listOf(ARTICLE_MODEL_1)
-        private val ARTICLE_LIST_2: List<ArticleModel> = listOf(ARTICLE_MODEL_2)
-        private val ARTICLE_LIST_ALL: List<ArticleModel> = ARTICLE_LIST_1 + ARTICLE_LIST_2
+        private val ARTICLE_LIST_1 = ArticleListBusinessModel(articles = listOf(ARTICLE_MODEL_1))
+        private val ARTICLE_LIST_2 = ArticleListBusinessModel(articles = listOf(ARTICLE_MODEL_2))
+        private val ARTICLE_LIST_ALL: List<ArticleBusinessModel> = listOf(ARTICLE_MODEL_1, ARTICLE_MODEL_2)
 
         private val toggleFavoriteArgs = ToggleFavoriteUsecaseArgs(ARTICLE_MODEL_1)
 
