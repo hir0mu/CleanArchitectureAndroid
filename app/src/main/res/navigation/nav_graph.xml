@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/navigation_search"
+    android:id="@+id/nav_graph">
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.hiring.cleanarchitecture.view.list.ArticleListFragment"
+        android:label="リスト" />
+
+    <fragment
+        android:id="@+id/navigation_favorite"
+        android:name="com.hiring.cleanarchitecture.view.favorite.FavoriteListFragment"
+        android:label="リスト" />
+
+    <fragment
+        android:id="@+id/detail_fragment"
+        android:name="com.hiring.cleanarchitecture.view.detail.ArticleDetailFragment"
+        android:label="詳細">
+
+        <argument
+            android:name="article_id"
+            app:argType="string" />
+
+    </fragment>
+
+    <action
+        android:id="@+id/action_to_article_detail"
+        app:destination="@+id/detail_fragment" />
+
+</navigation>
