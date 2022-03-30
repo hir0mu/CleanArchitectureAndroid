@@ -8,6 +8,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.hiring.cleanarchitecture.databinding.FragmentArticleDetailBinding
 import com.hiring.cleanarchitecture.ext.showErrorSnackBar
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,22 +16,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class ArticleDetailFragment : Fragment() {
 
-    companion object {
-        private const val ARGS_ARTICLE_ID = "args_article_id"
-
-        fun newInstance(articleId: String): ArticleDetailFragment {
-            return ArticleDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARGS_ARTICLE_ID, articleId)
-                }
-            }
-        }
-    }
-
     private val viewModel: ArticleDetailViewModel by viewModels()
     private lateinit var binding: FragmentArticleDetailBinding
-
-    private val articleId: String by lazy { checkNotNull(arguments?.getString(ARGS_ARTICLE_ID)) }
+    private val args: ArticleDetailFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +42,7 @@ class ArticleDetailFragment : Fragment() {
             }
         }
 
-        viewModel.setup(articleId)
+        viewModel.setup(args.articleId)
 
         binding.fav.setOnClickListener {
             viewModel.toggleFavorite()

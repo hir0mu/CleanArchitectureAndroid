@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hiring.cleanarchitecture.R
@@ -17,7 +18,7 @@ import com.hiring.cleanarchitecture.ext.setVisible
 import com.hiring.cleanarchitecture.ext.setupToolbar
 import com.hiring.cleanarchitecture.ext.showErrorSnackBar
 import com.hiring.cleanarchitecture.util.SimpleAdapter
-import com.hiring.cleanarchitecture.view.detail.ArticleDetailFragment
+import com.hiring.cleanarchitecture.view.detail.ArticleDetailFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -72,13 +73,8 @@ class ArticleListFragment : Fragment() {
                 ArticleItem(
                     article,
                     onItemClick = {
-                        parentFragmentManager.beginTransaction()
-                            .addToBackStack(null)
-                            .replace(
-                                R.id.container,
-                                ArticleDetailFragment.newInstance(it.article.id)
-                            )
-                            .commit()
+                        val action = ArticleDetailFragmentDirections.actionToArticleDetail(it.article.id)
+                        findNavController().navigate(action)
                     },
                     onCheckedChange = {
                         viewModel.toggleFavorite(it)

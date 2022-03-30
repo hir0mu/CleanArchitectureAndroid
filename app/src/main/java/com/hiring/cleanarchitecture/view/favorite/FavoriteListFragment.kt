@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hiring.cleanarchitecture.R
 import com.hiring.cleanarchitecture.databinding.FragmentFavoriteListBinding
@@ -14,7 +15,7 @@ import com.hiring.cleanarchitecture.ext.setVisible
 import com.hiring.cleanarchitecture.ext.setupToolbar
 import com.hiring.cleanarchitecture.ext.showErrorSnackBar
 import com.hiring.cleanarchitecture.util.SimpleAdapter
-import com.hiring.cleanarchitecture.view.detail.ArticleDetailFragment
+import com.hiring.cleanarchitecture.view.detail.ArticleDetailFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,10 +44,8 @@ class FavoriteListFragment : Fragment() {
         viewModel.favorites.observe(viewLifecycleOwner) { articles ->
             adapter.updateItems(articles.map { article ->
                 FavoriteItem(article) {
-                    parentFragmentManager.beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.container, ArticleDetailFragment.newInstance(it.article.id))
-                        .commit()
+                    val action = ArticleDetailFragmentDirections.actionToArticleDetail(it.article.id)
+                    findNavController().navigate(action)
                 }
             })
         }
