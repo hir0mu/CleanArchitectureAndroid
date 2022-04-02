@@ -1,13 +1,15 @@
-package com.hiring.cleanarchitecture.domain.usecase.article
+package com.hir0mu.cleanarchitecture.domain.usecase.article
 
-import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
-import com.hiring.cleanarchitecture.domain.businessmodel.ArticleListBusinessModel
-import com.hiring.cleanarchitecture.domain.mapper.ArticleBusinessModelMapper
-import com.hiring.cleanarchitecture.domain.mapper.ArticleListBusinessModelMapper
-import com.hiring.cleanarchitecture.domain.model.ArticleModel
-import com.hiring.cleanarchitecture.domain.model.UserModel
-import com.hiring.cleanarchitecture.domain.repository.ArticleRepository
-import com.hiring.cleanarchitecture.domain.repository.FavoriteRepository
+import com.hir0mu.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
+import com.hir0mu.cleanarchitecture.domain.businessmodel.ArticleListBusinessModel
+import com.hir0mu.cleanarchitecture.domain.mapper.ArticleBusinessModelMapper
+import com.hir0mu.cleanarchitecture.domain.mapper.ArticleListBusinessModelMapper
+import com.hir0mu.cleanarchitecture.domain.model.ArticleModel
+import com.hir0mu.cleanarchitecture.domain.model.UserModel
+import com.hir0mu.cleanarchitecture.domain.repository.ArticleRepository
+import com.hir0mu.cleanarchitecture.domain.repository.FavoriteRepository
+import com.hir0mu.cleanarchitecture.domain.usecase.article.FetchArticleListInput
+import com.hir0mu.cleanarchitecture.domain.usecase.article.FetchArticleListUsecaseImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest

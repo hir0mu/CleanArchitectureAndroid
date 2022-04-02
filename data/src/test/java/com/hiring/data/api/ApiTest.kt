@@ -1,7 +1,8 @@
-package com.hiring.data.api
+package com.hir0mu.data.api
 
-import com.hiring.data.TestUtils
-import com.hiring.data.entity.ArticleEntity
+import com.hir0mu.cleanarchitecture.data.api.ArticleApi
+import com.hir0mu.data.TestUtils
+import com.hir0mu.cleanarchitecture.data.entity.ArticleEntity
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.Assert.*

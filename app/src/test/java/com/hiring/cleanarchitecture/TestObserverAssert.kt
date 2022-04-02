@@ -1,4 +1,4 @@
-package com.hiring.cleanarchitecture
+package com.hir0mu.cleanarchitecture
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

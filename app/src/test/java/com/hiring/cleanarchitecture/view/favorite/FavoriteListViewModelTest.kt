@@ -1,14 +1,14 @@
-package com.hiring.cleanarchitecture.view.favorite
+package com.hir0mu.cleanarchitecture.view.favorite
 
-import com.hiring.cleanarchitecture.ViewModelTest
-import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
-import com.hiring.cleanarchitecture.domain.businessmodel.ArticleListBusinessModel
-import com.hiring.cleanarchitecture.domain.model.ArticleModel
-import com.hiring.cleanarchitecture.domain.model.UserModel
-import com.hiring.cleanarchitecture.domain.usecase.EmptyUsecaseInput
-import com.hiring.cleanarchitecture.domain.usecase.favorite.FetchFavoriteArticleListUsecase
-import com.hiring.cleanarchitecture.testObserver
-import com.hiring.cleanarchitecture.view.ViewModelArgs
+import com.hir0mu.cleanarchitecture.ViewModelTest
+import com.hir0mu.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
+import com.hir0mu.cleanarchitecture.domain.businessmodel.ArticleListBusinessModel
+import com.hir0mu.cleanarchitecture.domain.model.ArticleModel
+import com.hir0mu.cleanarchitecture.domain.model.UserModel
+import com.hir0mu.cleanarchitecture.domain.usecase.EmptyUsecaseInput
+import com.hir0mu.cleanarchitecture.domain.usecase.favorite.FetchFavoriteArticleListUsecase
+import com.hir0mu.cleanarchitecture.testObserver
+import com.hir0mu.cleanarchitecture.view.ViewModelArgs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestCoroutineScheduler

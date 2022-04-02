@@ -1,4 +1,4 @@
-package com.hiring.data
+package com.hir0mu.data
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json

@@ -6,7 +6,7 @@
 
         <variable
             name="article"
-            type="com.hiring.cleanarchitecture.domain.model.ArticleModel" />
+            type="com.hir0mu.cleanarchitecture.domain.model.ArticleModel" />
 
         <variable
             name="isFavorite"

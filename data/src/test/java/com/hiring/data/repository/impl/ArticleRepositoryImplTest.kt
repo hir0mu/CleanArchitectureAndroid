@@ -1,15 +1,15 @@
-package com.hiring.data.repository.impl
+package com.hir0mu.data.repository.impl
 
-import com.hiring.cleanarchitecture.domain.model.ArticleModel
-import com.hiring.cleanarchitecture.domain.model.UserModel
-import com.hiring.data.NetworkManager
-import com.hiring.data.api.ArticleApi
-import com.hiring.data.entity.ArticleEntity
-import com.hiring.data.entity.ArticleGroupEntity
-import com.hiring.data.entity.ArticleTagEntity
-import com.hiring.data.entity.UserEntity
-import com.hiring.data.mapper.ArticleModelMapper
-import com.hiring.data.repository.ArticleRepositoryImpl
+import com.hir0mu.cleanarchitecture.domain.model.ArticleModel
+import com.hir0mu.cleanarchitecture.domain.model.UserModel
+import com.hir0mu.cleanarchitecture.data.NetworkManager
+import com.hir0mu.cleanarchitecture.data.api.ArticleApi
+import com.hir0mu.cleanarchitecture.data.entity.ArticleEntity
+import com.hir0mu.cleanarchitecture.data.entity.ArticleGroupEntity
+import com.hir0mu.cleanarchitecture.data.entity.ArticleTagEntity
+import com.hir0mu.cleanarchitecture.data.entity.UserEntity
+import com.hir0mu.cleanarchitecture.data.mapper.ArticleModelMapper
+import com.hir0mu.cleanarchitecture.data.repository.ArticleRepositoryImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
