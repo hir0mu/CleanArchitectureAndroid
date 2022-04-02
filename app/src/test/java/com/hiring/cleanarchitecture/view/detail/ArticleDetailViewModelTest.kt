@@ -5,10 +5,10 @@ import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
 import com.hiring.cleanarchitecture.domain.businessmodel.BusinessModelUnit
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
-import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailArgs
+import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailInput
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailUsecase
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
-import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseArgs
+import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseInput
 import com.hiring.cleanarchitecture.testObserver
 import com.hiring.cleanarchitecture.view.ViewModelArgs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -142,7 +142,7 @@ class ArticleDetailViewModelTest : ViewModelTest() {
             isFavorite = false
         )
 
-        private val fetchArticleDetailArgs = FetchArticleDetailArgs(id = ID)
-        private val toggleFavoriteArgs = ToggleFavoriteUsecaseArgs(ARTICLE_BUSINESS_MODEL)
+        private val fetchArticleDetailArgs = FetchArticleDetailInput(id = ID)
+        private val toggleFavoriteArgs = ToggleFavoriteUsecaseInput(ARTICLE_BUSINESS_MODEL)
     }
 }

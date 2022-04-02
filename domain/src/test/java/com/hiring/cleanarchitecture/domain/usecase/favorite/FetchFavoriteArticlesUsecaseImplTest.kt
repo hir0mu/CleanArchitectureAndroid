@@ -7,7 +7,7 @@ import com.hiring.cleanarchitecture.domain.mapper.ArticleListBusinessModelMapper
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
 import com.hiring.cleanarchitecture.domain.repository.FavoriteRepository
-import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgsUnit
+import com.hiring.cleanarchitecture.domain.usecase.EmptyUsecaseInput
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -44,7 +44,7 @@ class FetchFavoriteArticlesUsecaseImplTest {
         val model = articleListModel(true)
 
         // When
-        val result = sut.execute(UsecaseArgsUnit).first()
+        val result = sut.execute(EmptyUsecaseInput).first()
 
         // Then
         assertEquals(model, result)
@@ -58,7 +58,7 @@ class FetchFavoriteArticlesUsecaseImplTest {
         val model = ArticleListBusinessModel.EMPTY
 
         // When
-        val result = sut.execute(UsecaseArgsUnit).first()
+        val result = sut.execute(EmptyUsecaseInput).first()
 
         // Then
         assertEquals(model, result)

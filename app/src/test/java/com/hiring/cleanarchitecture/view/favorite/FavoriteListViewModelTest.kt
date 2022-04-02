@@ -5,7 +5,7 @@ import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
 import com.hiring.cleanarchitecture.domain.businessmodel.ArticleListBusinessModel
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
-import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgsUnit
+import com.hiring.cleanarchitecture.domain.usecase.EmptyUsecaseInput
 import com.hiring.cleanarchitecture.domain.usecase.favorite.FetchFavoriteArticleListUsecase
 import com.hiring.cleanarchitecture.testObserver
 import com.hiring.cleanarchitecture.view.ViewModelArgs
@@ -36,7 +36,7 @@ class FavoriteListViewModelTest : ViewModelTest() {
     @Test
     fun testFetchFavorites() {
         // Given
-        given(fetchFavoriteArticleListUsecase.execute(UsecaseArgsUnit))
+        given(fetchFavoriteArticleListUsecase.execute(EmptyUsecaseInput))
             .willReturn(flowOf(FAVORITE_LIST))
         val testObserver = sut.favorites.testObserver()
 
@@ -48,13 +48,13 @@ class FavoriteListViewModelTest : ViewModelTest() {
             .shouldReceive(FAVORITE_LIST.articles, 0)
             .end()
 
-        verify(fetchFavoriteArticleListUsecase).execute(UsecaseArgsUnit)
+        verify(fetchFavoriteArticleListUsecase).execute(EmptyUsecaseInput)
     }
 
     @Test
     fun testFetchFavorites_Error() {
         // Given
-        given(fetchFavoriteArticleListUsecase.execute(UsecaseArgsUnit))
+        given(fetchFavoriteArticleListUsecase.execute(EmptyUsecaseInput))
             .willReturn(flowOfException())
         val testObserver = sut.favorites.testObserver()
         val errorObserver = sut.error.testObserver()
@@ -71,7 +71,7 @@ class FavoriteListViewModelTest : ViewModelTest() {
             .withValueCount(1)
             .end()
 
-        verify(fetchFavoriteArticleListUsecase).execute(UsecaseArgsUnit)
+        verify(fetchFavoriteArticleListUsecase).execute(EmptyUsecaseInput)
     }
 
     companion object {

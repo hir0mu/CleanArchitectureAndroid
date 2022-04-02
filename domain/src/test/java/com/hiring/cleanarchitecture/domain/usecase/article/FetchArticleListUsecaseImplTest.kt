@@ -86,7 +86,7 @@ class FetchArticleListUsecaseImplTest {
         private const val USER_NAME = "user_name"
         private const val USER_IMAGE_URL = "user_image_url"
 
-        private val ARGS = FetchArticleListArgs(ITEM_ID, PAGE)
+        private val ARGS = FetchArticleListInput(ITEM_ID, PAGE)
 
         private fun article() = ArticleModel(
             id = ARTICLE_ID,
