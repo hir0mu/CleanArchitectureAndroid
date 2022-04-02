@@ -1,4 +1,4 @@
-package com.hiring.cleanarchitecture
+package com.hir0mu.cleanarchitecture
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData

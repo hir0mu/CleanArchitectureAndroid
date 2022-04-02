@@ -1,9 +1,11 @@
-package com.hiring.cleanarchitecture.domain.usecase.favorite
+package com.hir0mu.cleanarchitecture.domain.usecase.favorite
 
-import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
-import com.hiring.cleanarchitecture.domain.model.ArticleModel
-import com.hiring.cleanarchitecture.domain.model.UserModel
-import com.hiring.cleanarchitecture.domain.repository.FavoriteRepository
+import com.hir0mu.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
+import com.hir0mu.cleanarchitecture.domain.model.ArticleModel
+import com.hir0mu.cleanarchitecture.domain.model.UserModel
+import com.hir0mu.cleanarchitecture.domain.repository.FavoriteRepository
+import com.hir0mu.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseImpl
+import com.hir0mu.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseInput
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.test.runTest

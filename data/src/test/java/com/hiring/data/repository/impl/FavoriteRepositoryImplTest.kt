@@ -1,12 +1,12 @@
-package com.hiring.data.repository.impl
+package com.hir0mu.data.repository.impl
 
-import com.hiring.cleanarchitecture.domain.model.ArticleModel
-import com.hiring.cleanarchitecture.domain.model.UserModel
-import com.hiring.data.db.ArticleDao
-import com.hiring.data.entity.FavArticleEntity
-import com.hiring.data.entity.UserEntity
-import com.hiring.data.mapper.ArticleModelMapper
-import com.hiring.data.repository.FavoriteRepositoryImpl
+import com.hir0mu.cleanarchitecture.domain.model.ArticleModel
+import com.hir0mu.cleanarchitecture.domain.model.UserModel
+import com.hir0mu.cleanarchitecture.data.db.ArticleDao
+import com.hir0mu.cleanarchitecture.data.entity.FavArticleEntity
+import com.hir0mu.cleanarchitecture.data.entity.UserEntity
+import com.hir0mu.cleanarchitecture.data.mapper.ArticleModelMapper
+import com.hir0mu.cleanarchitecture.data.repository.FavoriteRepositoryImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
