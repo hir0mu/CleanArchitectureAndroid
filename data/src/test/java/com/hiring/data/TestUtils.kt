@@ -13,6 +13,12 @@ object TestUtils {
     val retrofit: Retrofit = Retrofit.Builder()
         .client(okHttpClient)
         .baseUrl("https://qiita.com/api/v2/")
-        .addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory(checkNotNull(MediaType.parse("application/json"))))
+        .addConverterFactory(
+            Json { ignoreUnknownKeys = true }.asConverterFactory(
+                checkNotNull(
+                    MediaType.parse("application/json")
+                )
+            )
+        )
         .build()
 }

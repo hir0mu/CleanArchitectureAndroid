@@ -1,13 +1,11 @@
 package com.hiring.cleanarchitecture.domain.usecase.article
 
-import com.hiring.cleanarchitecture.domain.mapper.ArticleMapper
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
+import com.hiring.cleanarchitecture.domain.mapper.ArticleBusinessModelMapper
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
-import com.hiring.data.entity.Article
-import com.hiring.data.entity.FavArticle
-import com.hiring.data.entity.User
-import com.hiring.data.repository.ArticleRepository
-import com.hiring.data.repository.FavoriteRepository
+import com.hiring.cleanarchitecture.domain.repository.ArticleRepository
+import com.hiring.cleanarchitecture.domain.repository.FavoriteRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -36,7 +34,7 @@ class FetchArticleDetailUsecaseImplTest {
         sut = FetchArticleDetailUsecaseImpl(
             articleRepository,
             favoriteRepository,
-            ArticleMapper()
+            ArticleBusinessModelMapper()
         )
     }
 
@@ -44,7 +42,7 @@ class FetchArticleDetailUsecaseImplTest {
     fun testFetchArticle_hasFavorite() = runTest {
         // Given
         given(articleRepository.getArticleDetail(ARTICLE_ID)).willReturn(article())
-        given(favoriteRepository.getArticlesByIds(listOf(ARTICLE_ID))).willReturn(listOf(favArticle()))
+        given(favoriteRepository.getArticlesByIds(listOf(ARTICLE_ID))).willReturn(listOf(article()))
         val model = articleModel(true)
 
         // When
@@ -82,38 +80,15 @@ class FetchArticleDetailUsecaseImplTest {
 
         private val ARGS = FetchArticleDetailArgs(ARTICLE_ID)
 
-        private fun article() = Article(
-            renderedBody = "renderedBody",
-            body = "body",
-            coediting = false,
-            commentsCount = 1,
-            createdAt = "createdAt",
-            group = null,
-            id = ARTICLE_ID,
-            likesCount = 1,
-            private = false,
-            reactionsCount = 1,
-            tags = listOf(),
-            title = ARTICLE_TITLE,
-            updatedAt = "updatedAt",
-            url = ARTICLE_URL,
-            user = User(id = USER_ID, name = USER_NAME, profileImageUrl = USER_IMAGE_URL),
-            pageViewsCount = 0
-        )
-
-        private fun favArticle() = FavArticle(
-            createdAt = 0,
-            id = ARTICLE_ID,
-            title = ARTICLE_TITLE,
-            url = ARTICLE_URL,
-            user = User(id = USER_ID, name = USER_NAME, profileImageUrl = USER_IMAGE_URL),
-        )
-
-        private fun articleModel(isFavorite: Boolean) = ArticleModel(
+        private fun article() = ArticleModel(
             id = ARTICLE_ID,
             title = ARTICLE_TITLE,
             url = ARTICLE_URL,
             user = UserModel(id = USER_ID, name = USER_NAME, profileImageUrl = USER_IMAGE_URL),
+        )
+
+        private fun articleModel(isFavorite: Boolean) = ArticleBusinessModel(
+            article = article(),
             isFavorite = isFavorite
         )
     }

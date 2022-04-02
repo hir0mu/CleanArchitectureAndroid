@@ -74,7 +74,10 @@ class ArticleListFragment : Fragment() {
                     onItemClick = {
                         parentFragmentManager.beginTransaction()
                             .addToBackStack(null)
-                            .replace(R.id.container, ArticleDetailFragment.newInstance(it.id))
+                            .replace(
+                                R.id.container,
+                                ArticleDetailFragment.newInstance(it.article.id)
+                            )
                             .commit()
                     },
                     onCheckedChange = {

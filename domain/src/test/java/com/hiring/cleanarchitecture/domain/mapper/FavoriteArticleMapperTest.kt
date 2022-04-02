@@ -1,9 +1,9 @@
 package com.hiring.cleanarchitecture.domain.mapper
 
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleListBusinessModel
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
-import com.hiring.data.entity.FavArticle
-import com.hiring.data.entity.User
 import org.junit.Assert.*
 
 import org.junit.Before
@@ -11,24 +11,24 @@ import org.junit.Test
 
 class FavoriteArticleMapperTest {
 
-    private lateinit var sut: FavoriteArticleMapper
+    private lateinit var sut: ArticleListBusinessModelMapper
 
     @Before
     fun setUp() {
-        sut = FavoriteArticleMapper()
+        sut = ArticleListBusinessModelMapper()
     }
 
     @Test
     fun testTransform() {
         // Given
-        val entity = article()
         val model = articleModel(true)
+        val expected = articleListModel(true)
 
         // When
-        val result = sut.transform(entity)
+        val result = sut.map(listOf(model))
 
         // Then
-        assertEquals(model, result)
+        assertEquals(expected, result)
     }
 
     companion object {
@@ -39,20 +39,20 @@ class FavoriteArticleMapperTest {
         private const val USER_NAME = "user_name"
         private const val USER_IMAGE_URL = "user_image_url"
 
-        private fun article() = FavArticle(
-            createdAt = 0,
-            id = ARTICLE_ID,
-            title = ARTICLE_TITLE,
-            url = ARTICLE_URL,
-            user = User(id = USER_ID, name = USER_NAME, profileImageUrl = USER_IMAGE_URL),
-        )
-
-        private fun articleModel(isFavorite: Boolean) = ArticleModel(
+        private fun article() = ArticleModel(
             id = ARTICLE_ID,
             title = ARTICLE_TITLE,
             url = ARTICLE_URL,
             user = UserModel(id = USER_ID, name = USER_NAME, profileImageUrl = USER_IMAGE_URL),
+        )
+
+        private fun articleModel(isFavorite: Boolean) = ArticleBusinessModel(
+            article = article(),
             isFavorite = isFavorite
+        )
+
+        private fun articleListModel(isFavorite: Boolean) = ArticleListBusinessModel(
+            articles = listOf(articleModel(isFavorite)),
         )
     }
 }

@@ -2,7 +2,7 @@ package com.hiring.cleanarchitecture.view.favorite
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.hiring.cleanarchitecture.domain.model.ArticleModel
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
 import com.hiring.cleanarchitecture.domain.usecase.favorite.FetchFavoriteArticleListUsecase
 import com.hiring.cleanarchitecture.view.BaseViewModel
 import com.hiring.cleanarchitecture.view.Execution
@@ -18,13 +18,13 @@ class FavoriteListViewModel @Inject constructor(
 
     object FetchFavoriteArticleExecution : Execution
 
-    private val _favorites: MutableLiveData<List<ArticleModel>> = MutableLiveData()
-    val favorites: LiveData<List<ArticleModel>> = _favorites
+    private val _favorites: MutableLiveData<List<ArticleBusinessModel>> = MutableLiveData()
+    val favorites: LiveData<List<ArticleBusinessModel>> = _favorites
 
     fun fetchFavorites() {
         fetchFavoriteArticleListUsecase.execute(
             execution = FetchFavoriteArticleExecution,
-            onSuccess = { _favorites.postValue(it) },
+            onSuccess = { _favorites.postValue(it.articles) },
             retry = { fetchFavorites() }
         )
     }

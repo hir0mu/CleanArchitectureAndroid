@@ -18,7 +18,7 @@ import com.hiring.cleanarchitecture.view.detail.ArticleDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FavoriteListFragment: Fragment() {
+class FavoriteListFragment : Fragment() {
     private val viewModel: FavoriteListViewModel by viewModels()
     private lateinit var binding: FragmentFavoriteListBinding
     private val adapter = SimpleAdapter<ItemFavoriteArticleBinding>(R.layout.item_favorite_article)
@@ -37,14 +37,15 @@ class FavoriteListFragment: Fragment() {
         setupToolbar(binding.toolbar, R.string.title_favorite_list)
 
         binding.articleList.adapter = adapter
-        binding.articleList.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.articleList.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
         viewModel.favorites.observe(viewLifecycleOwner) { articles ->
             adapter.updateItems(articles.map { article ->
                 FavoriteItem(article) {
                     parentFragmentManager.beginTransaction()
                         .addToBackStack(null)
-                        .replace(R.id.container, ArticleDetailFragment.newInstance(it.id))
+                        .replace(R.id.container, ArticleDetailFragment.newInstance(it.article.id))
                         .commit()
                 }
             })
@@ -60,7 +61,9 @@ class FavoriteListFragment: Fragment() {
 
         viewModel.loading.observe(viewLifecycleOwner) {
             when (it.execution) {
-                FavoriteListViewModel.FetchFavoriteArticleExecution -> binding.indicator.setVisible(it.value)
+                FavoriteListViewModel.FetchFavoriteArticleExecution -> {
+                    binding.indicator.setVisible(it.value)
+                }
             }
         }
 

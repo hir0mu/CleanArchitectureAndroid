@@ -1,23 +1,26 @@
 package com.hiring.cleanarchitecture.domain.usecase.favorite
 
-import com.hiring.cleanarchitecture.domain.mapper.FavoriteArticleMapper
-import com.hiring.cleanarchitecture.domain.model.ArticleModel
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleListBusinessModel
+import com.hiring.cleanarchitecture.domain.mapper.ArticleBusinessModelMapper
+import com.hiring.cleanarchitecture.domain.mapper.ArticleListBusinessModelMapper
+import com.hiring.cleanarchitecture.domain.repository.FavoriteRepository
 import com.hiring.cleanarchitecture.domain.usecase.Usecase
 import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgsUnit
-import com.hiring.data.repository.FavoriteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-typealias FetchFavoriteArticleListUsecase = Usecase<UsecaseArgsUnit, List<ArticleModel>>
+typealias FetchFavoriteArticleListUsecase = Usecase<UsecaseArgsUnit, ArticleListBusinessModel>
 
 class FetchFavoriteArticleListUsecaseImpl(
     private val favoriteRepository: FavoriteRepository,
-    private val favoriteArticleMapper: FavoriteArticleMapper
+    private val articleMapper: ArticleBusinessModelMapper,
+    private val articleListMapper: ArticleListBusinessModelMapper
 ) : FetchFavoriteArticleListUsecase {
-    override fun execute(args: UsecaseArgsUnit): Flow<List<ArticleModel>> {
+    override fun execute(args: UsecaseArgsUnit): Flow<ArticleListBusinessModel> {
         return flow {
             val models = favoriteRepository.getAll()
-                .map { favoriteArticleMapper.transform(it) }
+                .map { articleMapper.map(it, true) }
+                .let { articleListMapper.map(it) }
             emit(models)
         }
     }

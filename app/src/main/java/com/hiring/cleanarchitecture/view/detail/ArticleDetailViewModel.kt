@@ -2,6 +2,7 @@ package com.hiring.cleanarchitecture.view.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailArgs
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailUsecase
@@ -22,8 +23,8 @@ class ArticleDetailViewModel @Inject constructor(
 
     object FetchArticleDetailExecution : Execution
 
-    private val _article: MutableLiveData<ArticleModel> = MutableLiveData(ArticleModel.EMPTY)
-    val article: LiveData<ArticleModel> = _article
+    private val _article = MutableLiveData(ArticleBusinessModel.EMPTY)
+    val article: LiveData<ArticleBusinessModel> = _article
 
     private lateinit var id: String
 

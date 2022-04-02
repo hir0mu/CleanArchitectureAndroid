@@ -1,7 +1,7 @@
 package com.hiring.data.api
 
 import com.hiring.data.TestUtils
-import com.hiring.data.entity.Article
+import com.hiring.data.entity.ArticleEntity
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.Assert.*
@@ -18,7 +18,7 @@ class ApiTest {
     @Test
     fun testFetchArticles() {
         val result = runBlocking { sut.articles("android", 1, 20) }
-        assertNotEquals(emptyList<Article>(), result)
+        assertNotEquals(emptyList<ArticleEntity>(), result)
     }
 
     @Test

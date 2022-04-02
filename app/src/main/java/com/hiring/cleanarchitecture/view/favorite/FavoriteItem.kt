@@ -1,24 +1,23 @@
 package com.hiring.cleanarchitecture.view.favorite
 
 import com.hiring.cleanarchitecture.databinding.ItemFavoriteArticleBinding
-import com.hiring.cleanarchitecture.domain.model.ArticleModel
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
 import com.hiring.cleanarchitecture.util.SimpleItem
-import com.hiring.cleanarchitecture.view.list.ArticleItem
 
 class FavoriteItem(
-    private val article: ArticleModel,
-    private val onItemClick: (ArticleModel) -> Unit
-): SimpleItem<ItemFavoriteArticleBinding>() {
+    private val model: ArticleBusinessModel,
+    private val onItemClick: (ArticleBusinessModel) -> Unit
+) : SimpleItem<ItemFavoriteArticleBinding>() {
     override fun bind(binding: ItemFavoriteArticleBinding) {
-        binding.article = article
-        binding.root.setOnClickListener { onItemClick(article) }
+        binding.article = model.article
+        binding.root.setOnClickListener { onItemClick(model) }
     }
 
     override fun isSameAs(other: SimpleItem<*>): Boolean {
-        return (other is FavoriteItem) && other.article.id == article.id && other.article.isFavorite == article.isFavorite
+        return (other is FavoriteItem) && other.model.article.id == model.article.id && other.model.isFavorite == model.isFavorite
     }
 
     override fun hasSameContentAs(other: SimpleItem<*>): Boolean {
-        return (other is FavoriteItem) && other.article.id == article.id
+        return (other is FavoriteItem) && other.model.article.id == model.article.id
     }
 }

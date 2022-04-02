@@ -1,6 +1,8 @@
 package com.hiring.cleanarchitecture.view.favorite
 
 import com.hiring.cleanarchitecture.ViewModelTest
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
+import com.hiring.cleanarchitecture.domain.businessmodel.ArticleListBusinessModel
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
 import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgsUnit
@@ -43,7 +45,7 @@ class FavoriteListViewModelTest : ViewModelTest() {
 
         // Then
         testObserver.await(count = 1)
-            .shouldReceive(FAVORITE_LIST, 0)
+            .shouldReceive(FAVORITE_LIST.articles, 0)
             .end()
 
         verify(fetchFavoriteArticleListUsecase).execute(UsecaseArgsUnit)
@@ -73,17 +75,21 @@ class FavoriteListViewModelTest : ViewModelTest() {
     }
 
     companion object {
-        private val FAVORITE_LIST: List<ArticleModel> = listOf(
-            ArticleModel(
-                id = "id",
-                title = "title",
-                url = "url",
-                user = UserModel(
-                    id = "id",
-                    name = "name",
-                    profileImageUrl = "profileImageUrl"
-                ),
-                isFavorite = true
+        private val FAVORITE_LIST = ArticleListBusinessModel(
+            articles = listOf(
+                ArticleBusinessModel(
+                    article = ArticleModel(
+                        id = "id",
+                        title = "title",
+                        url = "url",
+                        user = UserModel(
+                            id = "id",
+                            name = "name",
+                            profileImageUrl = "profileImageUrl"
+                        )
+                    ),
+                    isFavorite = true
+                )
             )
         )
     }

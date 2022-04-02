@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ArticleTag(
+data class ArticleTagEntity(
     @SerialName("name")
     val name: String,
     @SerialName("versions")

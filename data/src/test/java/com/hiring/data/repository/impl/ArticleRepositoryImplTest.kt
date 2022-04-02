@@ -1,11 +1,15 @@
 package com.hiring.data.repository.impl
 
+import com.hiring.cleanarchitecture.domain.model.ArticleModel
+import com.hiring.cleanarchitecture.domain.model.UserModel
 import com.hiring.data.NetworkManager
 import com.hiring.data.api.ArticleApi
-import com.hiring.data.entity.Article
-import com.hiring.data.entity.ArticleGroup
-import com.hiring.data.entity.ArticleTag
-import com.hiring.data.entity.User
+import com.hiring.data.entity.ArticleEntity
+import com.hiring.data.entity.ArticleGroupEntity
+import com.hiring.data.entity.ArticleTagEntity
+import com.hiring.data.entity.UserEntity
+import com.hiring.data.mapper.ArticleModelMapper
+import com.hiring.data.repository.ArticleRepositoryImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -30,7 +34,7 @@ class ArticleRepositoryImplTest {
     @Before
     fun setUp() {
         MockitoAnnotations.openMocks(this)
-        sut = ArticleRepositoryImpl(api, networkManager)
+        sut = ArticleRepositoryImpl(api, networkManager, ArticleModelMapper())
     }
 
     @Test
@@ -44,7 +48,7 @@ class ArticleRepositoryImplTest {
         val result = sut.getArticleDetail(id)
 
         // THEN
-        assertEquals(ARTICLE, result)
+        assertEquals(ARTICLE_MODEL, result)
         then(api).should().articleDetail(id)
     }
 
@@ -62,12 +66,12 @@ class ArticleRepositoryImplTest {
         val result = sut.getArticles(itemId, page, perPage)
 
         // THEN
-        assertEquals(ARTICLES, result)
+        assertEquals(ARTICLE_MODELS, result)
         then(api).should().articles(itemId, page, perPage)
     }
 
     companion object {
-        private val GROUP = ArticleGroup(
+        private val GROUP = ArticleGroupEntity(
             createdAt = "createdAt",
             id = 0,
             name = "name",
@@ -76,12 +80,12 @@ class ArticleRepositoryImplTest {
             urlName = "urlName",
         )
 
-        private val TAG = ArticleTag(
+        private val TAG = ArticleTagEntity(
             name = "name",
             versions = listOf()
         )
 
-        private val USER = User(
+        private val USER = UserEntity(
             description = "description",
             facebookId = "facebookId",
             followeesCount = 0,
@@ -100,7 +104,7 @@ class ArticleRepositoryImplTest {
             websiteUrl = "websiteUrl"
         )
 
-        private val ARTICLE = Article(
+        private val ARTICLE = ArticleEntity(
             renderedBody = "renderedBody",
             body = "body",
             coediting = false,
@@ -120,5 +124,18 @@ class ArticleRepositoryImplTest {
         )
 
         private val ARTICLES = listOf(ARTICLE)
+
+        private val ARTICLE_MODEL = ArticleModel(
+            id = "id",
+            title = "title",
+            url = "url",
+            user = UserModel(
+                id = "id",
+                name = "name",
+                profileImageUrl = "profileImageUrl",
+            ),
+        )
+
+        private val ARTICLE_MODELS = listOf(ARTICLE_MODEL)
     }
 }
