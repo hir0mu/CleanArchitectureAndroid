@@ -79,6 +79,6 @@ class ToggleFavoriteUsecaseImplTest {
         )
 
         private fun args(articleModel: ArticleBusinessModel) =
-            ToggleFavoriteUsecaseArgs(articleModel)
+            ToggleFavoriteUsecaseInput(articleModel)
     }
 }

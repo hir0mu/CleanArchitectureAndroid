@@ -6,10 +6,10 @@ import com.hiring.cleanarchitecture.domain.businessmodel.ArticleListBusinessMode
 import com.hiring.cleanarchitecture.domain.businessmodel.BusinessModelUnit
 import com.hiring.cleanarchitecture.domain.model.ArticleModel
 import com.hiring.cleanarchitecture.domain.model.UserModel
-import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListArgs
+import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListInput
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUsecase
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
-import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseArgs
+import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseInput
 import com.hiring.cleanarchitecture.testObserver
 import com.hiring.cleanarchitecture.view.ViewModelArgs
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -215,9 +215,9 @@ class ArticleListViewModelTest : ViewModelTest() {
         private val ARTICLE_LIST_ALL: List<ArticleBusinessModel> =
             listOf(ARTICLE_MODEL_1, ARTICLE_MODEL_2)
 
-        private val toggleFavoriteArgs = ToggleFavoriteUsecaseArgs(ARTICLE_MODEL_1)
+        private val toggleFavoriteArgs = ToggleFavoriteUsecaseInput(ARTICLE_MODEL_1)
 
-        fun fetchArticleListArgs(itemId: String, page: Int) = FetchArticleListArgs(
+        fun fetchArticleListArgs(itemId: String, page: Int) = FetchArticleListInput(
             itemId = itemId,
             page = page
         )

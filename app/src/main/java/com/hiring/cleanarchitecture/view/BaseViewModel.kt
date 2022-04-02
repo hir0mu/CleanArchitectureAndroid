@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.hiring.cleanarchitecture.R
 import com.hiring.cleanarchitecture.domain.businessmodel.BusinessModel
 import com.hiring.cleanarchitecture.domain.usecase.Usecase
-import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgs
-import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgsUnit
+import com.hiring.cleanarchitecture.domain.usecase.UsecaseInput
+import com.hiring.cleanarchitecture.domain.usecase.EmptyUsecaseInput
 import com.hiring.data.NetworkNotAvailableException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.catch
@@ -28,20 +28,20 @@ abstract class BaseViewModel(
     private val _loading: MutableLiveData<Loading> = MutableLiveData()
     val loading: LiveData<Loading> = _loading
 
-    protected fun <MODEL : BusinessModel> Usecase<UsecaseArgsUnit, MODEL>.execute(
+    protected fun <MODEL : BusinessModel> Usecase<EmptyUsecaseInput, MODEL>.execute(
         execution: Execution = DefaultExecution,
         onSuccess: (MODEL) -> Unit = {},
         retry: () -> Unit
     ) {
         execute(
             execution = execution,
-            args = UsecaseArgsUnit,
+            args = EmptyUsecaseInput,
             onSuccess = onSuccess,
             retry = retry
         )
     }
 
-    protected fun <ARGS : UsecaseArgs, MODEL : BusinessModel> Usecase<ARGS, MODEL>.execute(
+    protected fun <ARGS : UsecaseInput, MODEL : BusinessModel> Usecase<ARGS, MODEL>.execute(
         execution: Execution = DefaultExecution,
         args: ARGS,
         onSuccess: (MODEL) -> Unit = {},

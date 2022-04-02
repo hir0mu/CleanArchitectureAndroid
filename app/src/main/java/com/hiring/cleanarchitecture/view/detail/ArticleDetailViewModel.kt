@@ -3,11 +3,10 @@ package com.hiring.cleanarchitecture.view.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
-import com.hiring.cleanarchitecture.domain.model.ArticleModel
-import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailArgs
+import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailInput
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleDetailUsecase
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
-import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseArgs
+import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseInput
 import com.hiring.cleanarchitecture.view.BaseViewModel
 import com.hiring.cleanarchitecture.view.Execution
 import com.hiring.cleanarchitecture.view.ViewModelArgs
@@ -35,7 +34,7 @@ class ArticleDetailViewModel @Inject constructor(
     fun fetchDetail() {
         fetchArticleDetailUsecase.execute(
             execution = FetchArticleDetailExecution,
-            args = FetchArticleDetailArgs(id),
+            args = FetchArticleDetailInput(id),
             onSuccess = { _article.value = it },
             retry = { fetchDetail() }
         )
@@ -44,7 +43,7 @@ class ArticleDetailViewModel @Inject constructor(
     fun toggleFavorite() {
         val old = _article.value ?: return
         toggleFavoriteUsecase.execute(
-            args = ToggleFavoriteUsecaseArgs(old),
+            args = ToggleFavoriteUsecaseInput(old),
             onSuccess = {
                 _article.value = old.copy(isFavorite = !old.isFavorite)
             },
