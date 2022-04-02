@@ -6,16 +6,16 @@ import com.hiring.cleanarchitecture.domain.mapper.ArticleListBusinessModelMapper
 import com.hiring.cleanarchitecture.domain.repository.ArticleRepository
 import com.hiring.cleanarchitecture.domain.repository.FavoriteRepository
 import com.hiring.cleanarchitecture.domain.usecase.Usecase
-import com.hiring.cleanarchitecture.domain.usecase.UsecaseArgs
+import com.hiring.cleanarchitecture.domain.usecase.UsecaseInput
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-typealias FetchArticleListUsecase = Usecase<FetchArticleListArgs, ArticleListBusinessModel>
+typealias FetchArticleListUsecase = Usecase<FetchArticleListInput, ArticleListBusinessModel>
 
-data class FetchArticleListArgs(
+data class FetchArticleListInput(
     val itemId: String,
     val page: Int
-) : UsecaseArgs
+) : UsecaseInput
 
 class FetchArticleListUsecaseImpl(
     private val articleRepository: ArticleRepository,
@@ -28,8 +28,8 @@ class FetchArticleListUsecaseImpl(
         private const val PER_PAGE = 20
     }
 
-    override fun execute(args: FetchArticleListArgs): Flow<ArticleListBusinessModel> {
-        val (itemId, page) = args
+    override fun execute(input: FetchArticleListInput): Flow<ArticleListBusinessModel> {
+        val (itemId, page) = input
         return flow {
             val articles = articleRepository.getArticles(itemId, page, PER_PAGE)
             val favs = favoriteRepository.getArticlesByIds(articles.map { it.id })

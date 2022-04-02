@@ -3,11 +3,10 @@ package com.hiring.cleanarchitecture.view.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hiring.cleanarchitecture.domain.businessmodel.ArticleBusinessModel
-import com.hiring.cleanarchitecture.domain.model.ArticleModel
-import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListArgs
+import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListInput
 import com.hiring.cleanarchitecture.domain.usecase.article.FetchArticleListUsecase
 import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecase
-import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseArgs
+import com.hiring.cleanarchitecture.domain.usecase.favorite.ToggleFavoriteUsecaseInput
 import com.hiring.cleanarchitecture.view.BaseViewModel
 import com.hiring.cleanarchitecture.view.Execution
 import com.hiring.cleanarchitecture.view.ViewModelArgs
@@ -57,7 +56,7 @@ class ArticleListViewModel @Inject constructor(
 
         fetchArticleListUsecase.execute(
             execution = FetchArticleListExecution,
-            args = FetchArticleListArgs(params.itemId, params.page),
+            args = FetchArticleListInput(params.itemId, params.page),
             onSuccess = {
                 val old = if (params.page == FIRST_PAGE) listOf() else _articles.value.orEmpty()
                 _articles.postValue(old.merged(it.articles))
@@ -73,7 +72,7 @@ class ArticleListViewModel @Inject constructor(
 
     fun toggleFavorite(article: ArticleBusinessModel) {
         toggleFavoriteUsecase.execute(
-            args = ToggleFavoriteUsecaseArgs(article),
+            args = ToggleFavoriteUsecaseInput(article),
             retry = { toggleFavorite(article) }
         )
     }
