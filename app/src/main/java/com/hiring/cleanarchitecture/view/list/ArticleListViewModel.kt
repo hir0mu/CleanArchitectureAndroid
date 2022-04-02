@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ArticleListViewModel @Inject constructor(
-    private val usecase: FetchArticleListUsecase,
-    private val toggleUsecase: ToggleFavoriteUsecase,
+    private val fetchArticleListUsecase: FetchArticleListUsecase,
+    private val toggleFavoriteUsecase: ToggleFavoriteUsecase,
     viewModelArgs: ViewModelArgs
 ) : BaseViewModel(viewModelArgs) {
     companion object {
@@ -37,7 +37,7 @@ class ArticleListViewModel @Inject constructor(
         get() = articles.value?.size
 
     fun setup() {
-        if (params == SearchParams.EMPTY) {
+        if (params.isEmpty()) {
             params = SearchParams(itemId = searchQuery.value.orEmpty(), page = FIRST_PAGE)
             fetchArticles()
         }
@@ -54,7 +54,7 @@ class ArticleListViewModel @Inject constructor(
             _articles.value = listOf()
         }
 
-        usecase.execute(
+        fetchArticleListUsecase.execute(
             execution = FetchArticleListExecution,
             args = FetchArticleListArgs(params.itemId, params.page),
             onSuccess = {
@@ -71,7 +71,7 @@ class ArticleListViewModel @Inject constructor(
     }
 
     fun toggleFavorite(article: ArticleModel) {
-        toggleUsecase.execute(
+        toggleFavoriteUsecase.execute(
             args = ToggleFavoriteUsecaseArgs(article),
             retry = { toggleFavorite(article) }
         )

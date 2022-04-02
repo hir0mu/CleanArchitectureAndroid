@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteListViewModel @Inject constructor(
-    private val usecase: FetchFavoriteArticleListUsecase,
+    private val fetchFavoriteArticleListUsecase: FetchFavoriteArticleListUsecase,
     viewModelArgs: ViewModelArgs
 ) : BaseViewModel(viewModelArgs) {
 
@@ -22,7 +22,7 @@ class FavoriteListViewModel @Inject constructor(
     val favorites: LiveData<List<ArticleModel>> = _favorites
 
     fun fetchFavorites() {
-        usecase.execute(
+        fetchFavoriteArticleListUsecase.execute(
             execution = FetchFavoriteArticleExecution,
             onSuccess = { _favorites.postValue(it) },
             retry = { fetchFavorites() }

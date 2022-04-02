@@ -42,7 +42,7 @@ class FetchArticleListUsecaseImplTest {
     }
 
     @Test
-    fun fetchArticles_hasFavorite() = runTest {
+    fun testFetchArticles_hasFavorite() = runTest {
         // Given
         given(articleRepository.getArticles(ITEM_ID, PAGE, PER_PAGE)).willReturn(listOf(article()))
         given(favoriteRepository.getArticlesByIds(listOf(ARTICLE_ID))).willReturn(listOf(favArticle()))
@@ -58,7 +58,7 @@ class FetchArticleListUsecaseImplTest {
     }
 
     @Test
-    fun fetchArticles_noFavorite() = runTest {
+    fun testFetchArticles_noFavorite() = runTest {
         // Given
         given(articleRepository.getArticles(ITEM_ID, PAGE, PER_PAGE)).willReturn(listOf(article()))
         given(favoriteRepository.getArticlesByIds(listOf(ARTICLE_ID))).willReturn(listOf())

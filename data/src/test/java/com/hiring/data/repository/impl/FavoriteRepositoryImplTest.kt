@@ -12,7 +12,7 @@ import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.given
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@ExperimentalCoroutinesApi
 class FavoriteRepositoryImplTest {
     @Mock
     private lateinit var dao: ArticleDao

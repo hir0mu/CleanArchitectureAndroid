@@ -7,4 +7,8 @@ data class SearchParams(
     companion object {
         val EMPTY = SearchParams("", 0)
     }
+
+    fun isEmpty(): Boolean {
+        return this == EMPTY
+    }
 }

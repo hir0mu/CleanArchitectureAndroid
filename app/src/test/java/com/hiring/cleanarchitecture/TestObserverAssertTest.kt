@@ -3,12 +3,7 @@ package com.hiring.cleanarchitecture
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.test.runTest
 import org.junit.Test
-
 import org.junit.Assert.*
 import org.junit.Rule
 import java.util.concurrent.Executors
@@ -22,9 +17,6 @@ class TestObserverAssertTest {
 
     @Test
     fun test_await() {
-        runTest {
-
-        }
         // Given
         val liveData = MutableLiveData<String>()
         val testObserver = liveData.testObserver()
@@ -40,24 +32,15 @@ class TestObserverAssertTest {
         // Then
         testObserver.await(3)
             .shouldReceive("a")
-            .shouldReceiveAt("a", 0)
-            .shouldReceiveAt("b", 1)
-            .shouldReceiveAt("c", 2)
+            .shouldReceive("a", 0)
+            .shouldReceive("b", 1)
+            .shouldReceive("c", 2)
             .withValueCount(3)
             .end()
     }
 
-fun <T> Flow<T>.await(): T {
-    return runBlocking { first() }
-}
-
-    fun <T> Flow<T>.await(count: Int): T {
-        return runBlocking { first() }
-    }
-
     @Test
     fun test_await_failed() {
-        flow<String> {  }.first()
         // Given
         val liveData = MutableLiveData<String>()
         val testObserver = liveData.testObserver()
@@ -74,9 +57,9 @@ fun <T> Flow<T>.await(): T {
         try {
             testObserver.await(3)
                 .shouldReceive("a")
-                .shouldReceiveAt("a", 0)
-                .shouldReceiveAt("b", 1)
-                .shouldReceiveAt("c", 2)
+                .shouldReceive("a", 0)
+                .shouldReceive("b", 1)
+                .shouldReceive("c", 2)
                 .withValueCount(3)
                 .end()
             fail()
