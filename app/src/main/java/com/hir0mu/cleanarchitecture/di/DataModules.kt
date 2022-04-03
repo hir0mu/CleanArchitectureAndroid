@@ -2,12 +2,14 @@ package com.hir0mu.cleanarchitecture.di
 
 import android.content.Context
 import androidx.room.Room
+import com.hir0mu.cleanarchitecture.BuildConfig
 import com.hir0mu.cleanarchitecture.domain.mapper.ArticleBusinessModelMapper
 import com.hir0mu.cleanarchitecture.domain.repository.ArticleRepository
 import com.hir0mu.cleanarchitecture.domain.repository.FavoriteRepository
 import com.hir0mu.cleanarchitecture.util.NetworkManagerImpl
 import com.hir0mu.cleanarchitecture.data.NetworkManager
 import com.hir0mu.cleanarchitecture.data.api.ArticleApi
+import com.hir0mu.cleanarchitecture.data.api.local.ArticleLocal
 import com.hir0mu.cleanarchitecture.data.db.ArticleDao
 import com.hir0mu.cleanarchitecture.data.db.ArticleDataBase
 import com.hir0mu.cleanarchitecture.data.mapper.ArticleModelMapper
@@ -59,7 +61,10 @@ object DataModule {
     fun provideArticleApi(
         retrofit: Retrofit
     ): ArticleApi {
-        return retrofit.create(ArticleApi::class.java)
+        return when (BuildConfig.LOCAL) {
+            true -> ArticleLocal()
+            else -> retrofit.create(ArticleApi::class.java)
+        }
     }
 
     @Singleton

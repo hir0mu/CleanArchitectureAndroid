@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CleanArchitectureAndroid</string>
+    <string name="app_name">CArch</string>
 
     <!--ナビゲーション-->
     <string name="tab_title_search">検索</string>

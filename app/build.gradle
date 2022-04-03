@@ -17,10 +17,23 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField "boolean", "LOCAL", "false"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+        local {
+            minifyEnabled false
+            debuggable = true
+            buildConfigField "boolean", "LOCAL", "true"
+            applicationIdSuffix ".local"
+            matchingFallbacks = ['debug', 'release']
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
