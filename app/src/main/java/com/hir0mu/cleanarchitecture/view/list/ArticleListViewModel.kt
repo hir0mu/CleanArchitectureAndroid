@@ -38,29 +38,29 @@ class ArticleListViewModel @Inject constructor(
 
     fun setup() {
         if (params.isEmpty()) {
-            params = SearchParams(itemId = searchQuery.value.orEmpty(), page = FIRST_PAGE)
-            fetchArticles()
+            fetchArticles(shouldReset = true)
         }
     }
 
     fun fetchArticles(shouldReset: Boolean = false) {
-        if (isLoading) {
-            return
+        when {
+            isLoading -> return
+            shouldReset -> {
+                params = SearchParams(itemId = searchQuery.value.orEmpty(), page = FIRST_PAGE)
+                _articles.value = listOf()
+            }
+            else -> {
+                params = params.countedUp()
+            }
         }
         isLoading = true
-
-        if (shouldReset) {
-            params = SearchParams(itemId = searchQuery.value.orEmpty(), page = FIRST_PAGE)
-            _articles.value = listOf()
-        }
 
         fetchArticleListUsecase.execute(
             execution = FetchArticleListExecution,
             args = FetchArticleListInput(params.itemId, params.page),
             onSuccess = {
-                val old = if (params.page == FIRST_PAGE) listOf() else _articles.value.orEmpty()
+                val old = _articles.value.orEmpty()
                 _articles.postValue(old.merged(it.articles))
-                params = params.countedUp()
                 isLoading = false
             },
             retry = {

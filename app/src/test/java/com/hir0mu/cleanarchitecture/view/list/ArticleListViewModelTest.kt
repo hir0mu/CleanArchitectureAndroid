@@ -52,8 +52,10 @@ class ArticleListViewModelTest : ViewModelTest() {
         sut.setup()
 
         // Then
-        testObserver.await()
-            .shouldReceive(ARTICLE_LIST_1.articles)
+        testObserver.await(count = 2)
+            .shouldReceive(listOf(), 0)
+            .shouldReceive(ARTICLE_LIST_1.articles, 1)
+            .withValueCount(2)
             .end()
 
         verify(fetchArticleListUsecase).execute(fetchArticleListArgs(itemId, 1))
@@ -72,8 +74,8 @@ class ArticleListViewModelTest : ViewModelTest() {
         sut.setup()
 
         // Then
-        testObserver.await(count = 0)
-            .withValueCount(0)
+        testObserver.await(count = 1)
+            .withValueCount(1)
             .end()
 
         errorObserver.await(count = 1)
@@ -98,10 +100,11 @@ class ArticleListViewModelTest : ViewModelTest() {
         sut.fetchArticles(shouldReset = false)
 
         // Then
-        testObserver.await(count = 2)
-            .shouldReceive(ARTICLE_LIST_1.articles, 0)
-            .shouldReceive(ARTICLE_LIST_ALL, 1)
-            .withValueCount(2)
+        testObserver.await(count = 3)
+            .shouldReceive(listOf(), 0)
+            .shouldReceive(ARTICLE_LIST_1.articles, 1)
+            .shouldReceive(ARTICLE_LIST_ALL, 2)
+            .withValueCount(3)
             .end()
 
         verify(fetchArticleListUsecase).execute(fetchArticleListArgs(itemId, 1))
@@ -124,9 +127,10 @@ class ArticleListViewModelTest : ViewModelTest() {
         sut.fetchArticles(shouldReset = false)
 
         // Then
-        testObserver.await(count = 1)
-            .shouldReceive(ARTICLE_LIST_1.articles, 0)
-            .withValueCount(1)
+        testObserver.await(count = 2)
+            .shouldReceive(listOf(), 0)
+            .shouldReceive(ARTICLE_LIST_1.articles, 1)
+            .withValueCount(2)
             .end()
 
         errorObserver.await(count = 1)
