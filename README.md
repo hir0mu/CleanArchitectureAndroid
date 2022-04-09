@@ -1,7 +1,7 @@
 
 # アプリ概要
 
-- Qiita APIを使って記事を検索・閲覧できるアプリ。
+- Qiita APIを使って記事を検索・閲覧できるアプリ
 - お気に入り登録機能
 
 以下、スクショ（念のためにダミーデータを表示してます。実際にビルドした際にはQiita APIを叩くようになっています）。
@@ -32,6 +32,17 @@
 
 <img src="images/favorite_list.png" width="300">
 
+# 技術構成
+- Kotlin
+- Coroutine
+- Flow
+- Navigation
+- LiveData
+- Retrofit
+- OkHttp3
+- Dagger Hilt
+- Room
+- Glide
 
 # 設計
 
@@ -39,10 +50,8 @@
 
 
 ## Domain層
-
 - アプリケーションの振る舞いを決める層
 - どこの層にも依存しない
-- Usecase・BusinessModel・Model
 
 #### Model
 - Repositoryからの出力として定義
@@ -56,9 +65,9 @@
 - ModelからBusinessModelへの変換を定義
 
 #### Repository
-- データへのアクセスの定義
+- データへのアクセス定義
 - Domain層ではinterfaceのみ
-- 実装はデータ層に書く
+- 実装はData層に書く
 
 #### Usecase
 - それぞれの振る舞いを記載
@@ -123,8 +132,8 @@ class FetchArticleListUsecaseImpl(
 ```
 
 ## Data層
+- DBやAPIなどのデータに対するやりとりを実装する
 - Repositoryの実装を置いておく
-- 
 
 #### Entity
 - DBのカラムやAPIレスポンスを定義
@@ -166,6 +175,7 @@ class ArticleRepositoryImpl(
 ```
 
 ## Presentation層
+- UI/UXを決める層
 - 依存解決する
 
 #### ViewModel
@@ -204,22 +214,24 @@ class ArticleListViewModel @Inject constructor(
     fun setup() {
         if (params.isEmpty()) {
             // 初回だけ記事一覧を取得する。詳細から戻ってきた時に対応
-            params = SearchParams(itemId = searchQuery.value.orEmpty(), page = FIRST_PAGE)
-            fetchArticles()
+            fetchArticles(shouldReset = true)
         }
     }
 
     fun fetchArticles(shouldReset: Boolean = false) {
-        if (isLoading) { // ローディング中であれば無視
-            return
+        when {
+            isLoading -> return // ローディング中であれば無視
+            shouldReset -> {
+                // 検索バーで入力した時などのためにリセットする機能がある
+                params = SearchParams(itemId = searchQuery.value.orEmpty(), page = FIRST_PAGE)
+                _articles.value = listOf()
+            }
+            else -> {
+                // リセットしないのであればページをインクリメント
+                params = params.countedUp()
+            }
         }
         isLoading = true
-
-        // 検索バーで入力した時などのためにリセットする機能がある
-        if (shouldReset) {
-            params = SearchParams(itemId = searchQuery.value.orEmpty(), page = FIRST_PAGE)
-            _articles.value = listOf()
-        }
 
         // 記事一覧取得のためにUsecaseを呼び出す。
         fetchArticleListUsecase.execute(
@@ -228,9 +240,8 @@ class ArticleListViewModel @Inject constructor(
             args = FetchArticleListInput(params.itemId, params.page),
             onSuccess = {
                 // 成功時にここが呼ばれる
-                val old = if (params.page == FIRST_PAGE) listOf() else _articles.value.orEmpty()
+                val old = _articles.value.orEmpty()
                 _articles.postValue(old.merged(it.articles))
-                params = params.countedUp()
                 isLoading = false
             },
             retry = {
@@ -259,10 +270,6 @@ class ArticleListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar(binding.toolbar, R.string.title_article_list)
-
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
 
         binding.articleList.adapter = adapter
         val manager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -276,7 +283,6 @@ class ArticleListFragment : Fragment() {
                 }
             }
         })
-        binding.indicator.hide()
 
         binding.searchBar.setOnEditorActionListener { v, actionId, event ->
             when (actionId) {
